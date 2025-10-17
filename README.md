@@ -22,5 +22,5 @@ pip install Flask
 ### Running Flask (localhost:5000 default)
 flask --app app run
 
-## Remove tracked cache files
+## Remove tracked and staged files
 git rm -r --cached backend/__pycache__
