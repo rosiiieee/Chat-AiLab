@@ -18,9 +18,10 @@ cd backend
 python3 -m venv .venv
 . .venv/bin/activate
 pip install Flask
+pip install -U flask-cors
 
 ### Running Flask (localhost:5000 default)
 flask --app app run
 
-## Remove tracked and staged files
+### Remove tracked and staged files
 git rm -r --cached backend/__pycache__
