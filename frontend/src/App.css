@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
 .App {
   text-align: center;
+  font-family: 'Inter', sans-serif;
 }
 
 .App-logo {
@@ -8,13 +11,11 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .App-header {
-  background-color: #282c34;
+  background: #240B27;
+  background: linear-gradient(198deg, rgba(36, 11, 39, 1) 15%, rgba(159, 48, 164, 1) 50%, rgba(36, 11, 39, 1) 85%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
