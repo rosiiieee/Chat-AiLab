@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { X, Menu } from 'lucide-react';
 import './Sidebar.css';
 import alabHead from '../../alab_head.png';
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ onNavigate }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -11,9 +13,8 @@ const Sidebar = ({ onNavigate }) => {
   };
 
   const handleNavigation = (page) => {
-    if (onNavigate) {
-      onNavigate(page);
-    }
+    if (onNavigate) onNavigate(page);
+    navigate(`/${page}`);
     setIsOpen(false);
   };
 
@@ -68,7 +69,7 @@ const Sidebar = ({ onNavigate }) => {
           <ul className="sidebar-menu-list">
             <li className="sidebar-menu-item">
               <button
-                onClick={() => handleNavigation('home')}
+                onClick={() => handleNavigation('landing')}
                 className="sidebar-menu-btn"
               >
                 Home
@@ -84,7 +85,7 @@ const Sidebar = ({ onNavigate }) => {
             </li>
             <li className="sidebar-menu-item">
               <button
-                onClick={() => handleNavigation('tour')}
+                onClick={() => handleNavigation('map')}
                 className="sidebar-menu-btn"
               >
                 Tour with Alab
