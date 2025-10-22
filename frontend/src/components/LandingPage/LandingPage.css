@@ -1,39 +1,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+
+
 .background {
+  min-height: 100vh;
+
   background: #240B27;
   background: linear-gradient(198deg, rgba(36, 11, 39, 1) 5%, rgba(159, 48, 164, 1) 50%, rgba(36, 11, 39, 1) 95%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .landing-container {
-  min-height: 100vh;
+  
   width: 700px;
   max-width: 80%;
-  margin: 0 auto;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  
   padding: 23px;
   position: relative;
   overflow: hidden;
 }
 
-.landing-container::before {
+/* .landing-container::before {
   /*content: "";
   position: absolute;
   inset: 0;
   /* background: radial-gradient(circle, rgba(139,92,246,0.3), transparent);
   z-index: 0; */
-}
+
 
 .heading-light {
   color: white;
   font-family: 'Inter', sans-serif;
-  font-size: clamp(1rem, 2vw + 1rem, 4rem);
+  font-size: clamp(1rem, 2vw + 1rem, 3rem);
   font-weight: 200;
-  margin-bottom: clamp(-3rem, -5rem, -8rem);
+  margin-bottom: clamp(-4.5rem, -4vw, -3.3rem);
   text-align: left;
   letter-spacing: -0.08rem;
+
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 1s ease-out forwards;
 }
 
 .heading-bold {
@@ -43,6 +55,17 @@
   font-weight: 500;
   margin-bottom: 48px;
   text-align: left;
+
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 1s ease-out 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Character image */
@@ -50,12 +73,14 @@
   width: clamp(6rem, 55vw, 18rem);
   height: auto;
   object-fit: contain;
-  z-index: 1;
+  z-index: 0;
   margin: 0 auto;
   margin-bottom: -30px;
+
 }
 
 .testd {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center; /* horizontally center */
@@ -104,7 +129,7 @@
 /* Buttons */
 .button {
   width: 100%;
-  max-width: 300px;
+  max-width: 500px;
   padding: 12px 24px;
   margin: 8px 0;
   border-radius: 9999px;
@@ -127,3 +152,23 @@
 .button:hover {
   background-color: rgba(190, 56, 190, 0.8);
 }
+
+.button-container {
+  min-height:200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#starteded{
+  align-self: flex-start;
+  margin-top: 0;
+  width: 250px;
+  transform: translateY(-100%);
+}
+
+#wyd{
+  width: 250px;
+}
+
