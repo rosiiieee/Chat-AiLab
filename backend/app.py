@@ -17,6 +17,10 @@ def chat():
     # Use RAG service to generate response
     try:
         result = graph.invoke({"question": user_message})
+
+        print(f"User Message: {user_message}\n\n")
+        print(f"Context: {result['context']}\n\n")
+        print(f"Answer: {result['answer']}")
         response_message = result['answer']
     except Exception as e:
         response_message = "An error occurred while processing your request."

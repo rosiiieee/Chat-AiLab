@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
-
+import './Chat.css'
 /**
  * 
  * This is a temporary UI
@@ -22,9 +22,9 @@ const Chat = () => {
 
         // Add user message
         const userMessage = {
-        id: Date.now(),
-        text: inputValue,
-        sender: "user",
+          id: Date.now(),
+          text: inputValue,
+          sender: "user",
         };
 
         setMessages((prev) => [...prev, userMessage]);
@@ -67,27 +67,23 @@ const Chat = () => {
     }
 
     const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-        handleSendMessage();
-    }
+      if (e.key === "Enter") {
+          handleSendMessage();
+      }
     };
-
 
     const navigate = useNavigate();
 
     return (
       <div className="background">
-        <motion.div className="landing-container"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          >
-        <div className="chat-container">
-            <div className="chat-header">
-              <h2>PLM Assistant</h2>
-              <p>This is a temporary chat ui for backend testing</p>
-            </div>
+        <motion.div
+          className="landing-container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
+          <div className="chat-container">
 
             <div className="chat-messages">
               {messages.map((message) => (
@@ -111,19 +107,23 @@ const Chat = () => {
                 placeholder="Type your message..."
                 className="chat-input"
               />
-              <button className="send-button">Send</button>
+              <button onClick={handleSendMessage} className="send-button">
+                Send
+              </button>
             </div>
 
-            <div className = "button-container">
-                  <button className="button" id = "wyd"
-                  onClick={() => navigate("/landing")}>
-                  Exit
+            <div className="button-container">
+              <button
+                className="button"
+                id="wyd"
+                onClick={() => navigate("/landing")}
+              >
+                Exit
               </button>
             </div>
           </div>
         </motion.div>
-      </div>  
-      
+      </div>
     );
 }
 

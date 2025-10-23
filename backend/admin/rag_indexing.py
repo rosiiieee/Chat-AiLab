@@ -21,7 +21,6 @@ vector_store = Chroma(
 
 vector_store.reset_collection()  # optional reset before adding again
 
-
 # Load data
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 
@@ -40,11 +39,11 @@ print(f"Total characters of 1st doc: {len(docs[0].page_content)}")
 # Split data
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 all_splits = text_splitter.split_documents(docs)
 
 print(f"Splitted documents into {len(all_splits)} sub-documents.")
 
 # Store data
 document_ids = vector_store.add_documents(documents=all_splits)
-print(document_ids[:10])
+print('Stored vectors: ', document_ids[:10], ' ...')

@@ -20,7 +20,9 @@ vector_store = Chroma(
 # Count how many documents are stored
 print(f"Documents in DB: {vector_store._collection.count()}")
 
+print(f"All Documents: {vector_store.get()}")
+
 # Retrieve a few stored documents
-results = vector_store.similarity_search("What is PLM?", k=3)
+""" results = vector_store.similarity_search("What is PLM?", k=3)
 for r in results:
-    print(r.page_content[:200])  # show first 200 chars of each
+    print(r.page_content[:200])  # show first 200 chars of each """
