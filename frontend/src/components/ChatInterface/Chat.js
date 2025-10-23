@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * 
@@ -70,38 +72,58 @@ const Chat = () => {
     }
     };
 
+
+    const navigate = useNavigate();
+
     return (
-      <div className="chat-container">
-        <div className="chat-header">
-          <h2>PLM Assistant</h2>
-          <p>This is a temporary chat ui for backend testing</p>
-        </div>
-
-        <div className="chat-messages">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`message ${
-                message.sender === "user" ? "user-message" : "bot-message"
-              }`}
-            >
-              <div className="message-content">{message.text}</div>
+      <div className="background">
+        <motion.div className="landing-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          >
+        <div className="chat-container">
+            <div className="chat-header">
+              <h2>PLM Assistant</h2>
+              <p>This is a temporary chat ui for backend testing</p>
             </div>
-          ))}
-        </div>
 
-        <div className="chat-input-container">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type your message..."
-            className="chat-input"
-          />
-          <button className="send-button">Send</button>
-        </div>
-      </div>
+            <div className="chat-messages">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`message ${
+                    message.sender === "user" ? "user-message" : "bot-message"
+                  }`}
+                >
+                  <div className="message-content">{message.text}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="chat-input-container">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyPress}
+                placeholder="Type your message..."
+                className="chat-input"
+              />
+              <button className="send-button">Send</button>
+            </div>
+
+            <div className = "button-container">
+                  <button className="button" id = "wyd"
+                  onClick={() => navigate("/landing")}>
+                  Exit
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>  
+      
     );
 }
 
