@@ -8,6 +8,7 @@ node_modules/
 venv/
 env/
 ENV/
+.env
 
 # testing
 /coverage
@@ -58,3 +59,9 @@ MANIFEST
 # OS
 .DS_Store
 Thumbs.db
+
+# data
+backend/admin/data/chroma_plm_db/
+backend/admin/data/plm-handbook.pdf
+backend/admin/data/plm-handbook.txt
+
