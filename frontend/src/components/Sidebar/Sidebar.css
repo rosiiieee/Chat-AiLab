@@ -148,6 +148,7 @@
 .sidebar-menu-btn {
   width: 100%;
   font-family: 'Inter', sans-serif;
+  font-weight: 700;
   text-align: left;
   padding: 10px 22px;
   color: white;

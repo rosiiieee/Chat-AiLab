@@ -97,7 +97,7 @@ const Sidebar = ({ onNavigate }) => {
         {/* Exit Button at Bottom */}
         <div className="sidebar-exit-container">
           <button
-            onClick={() => handleNavigation('exit')}
+            onClick={() => handleNavigation('landing')}
             className="sidebar-exit-btn"
           >
             Exit
