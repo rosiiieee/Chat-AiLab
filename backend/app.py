@@ -21,7 +21,6 @@ def chat():
     except Exception as e:
         response_message = "An error occurred while processing your request."
 
-    
     return jsonify({
         'response': response_message,
         'status': 'success'
