@@ -148,6 +148,7 @@
                     padding: 0.5rem 1rem;
                     border-radius: 1rem;
                     max-width: 20rem;
+                    display: inline-block; /*added */
                 }
 
                 @media (min-width: 768px) {
@@ -166,8 +167,9 @@
                     background-color: white;
                     color: #1F2937;
                     border-bottom-left-radius: 0;
-                }
 
+                }
+                
                 .footer {
                     padding: 1rem;
                     background: linear-gradient(270deg, #341038 0%, #240b27 50%);
