@@ -19,6 +19,8 @@ def chat():
         result = graph.invoke({"question": user_message})
 
         print(f"User Message: {user_message}\n\n")
+        print(f"User Query: {result['query']}\n\n")
+        print(f"Hypothetical Message: {result['hypothetical_question']}\n\n")
         print(f"Context: {result['context']}\n\n")
         print(f"Answer: {result['answer']}")
         response_message = result['answer']

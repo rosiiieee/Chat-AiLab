@@ -44,6 +44,30 @@ all_splits = text_splitter.split_documents(docs)
 
 print(f"Splitted documents into {len(all_splits)} sub-documents.")
 
+# Categorize Document
+
+for doc in all_splits:
+    source = doc.metadata['source']
+
+    if ('1_General_University_Information_and_History' in source):
+        doc.metadata['section'] = 'general_university_information'
+    elif ('2_Students\'_Rights_and_Responsibilities' in source):
+        doc.metadata['section'] = 'student_rights_and_responsibility'
+    elif ('3_Academic_Policies' in source):
+        doc.metadata['section'] = 'academic_policies'
+    elif ('4_Student_Affairs_and_Services' in source):
+        doc.metadata['section'] = 'student_affairs_and_services'
+    elif ('5_Student_Councils,_Organizations,_and_Activities_Policies' in source):
+        doc.metadata['section'] = 'student_councils_organizations_and_activities_policies'
+    elif ('6_Campus_Publication' in source):
+        doc.metadata['section'] = 'campus_publication'
+    elif ('7_Disciplinary_Policies' in source):
+        doc.metadata['section'] = 'disciplinary_policies'
+    elif ('8_General Provisions,_Glossary,_and_Appendices' in source):
+        doc.metadata['section'] = 'general_provisions_glossary_and_appendices'
+
 # Store data
 document_ids = vector_store.add_documents(documents=all_splits)
 print('Stored vectors: ', document_ids[:10], ' ...')
+
+print('Metadata Sample: ', all_splits[75].metadata)
