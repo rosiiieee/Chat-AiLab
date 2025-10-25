@@ -127,6 +127,28 @@ const Chat = () => {
               </button>
             </header>
 
+                  {/* Chat Area */}
+                <main className="chat-area">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`message-container ${msg.sender}`}>
+                            {msg.sender === 'typing' ? (
+                                <div className="typing-indicator">
+                                    <span className="typing-text">Thinking</span>
+                                    <div className="typing-dot"></div>
+                                    <div className="typing-dot"></div>
+                                    <div className="typing-dot"></div>
+                                </div>
+                            ) : (
+                                // SIMPLIFIED: No more slots, just the bubble.
+                                // The CSS will handle alignment based on the container's class.
+                                <div className={`message-bubble ${msg.sender}`}>
+                                    <p>{msg.text}</p>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                    <div ref={chatEndRef} />
+                </main>
             {/* Chat Area */}
             <main className="chat-area">
               {messages.map((msg, index) => (
