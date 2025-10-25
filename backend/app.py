@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from rag_service import graph
+from langgraph.checkpoint.memory import InMemorySaver
+
+from rag_service import invoke
 
 app = Flask(__name__)
 CORS(app)
@@ -12,17 +14,12 @@ def hello_world():
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_message = data.get('message', '')
-
+    new_user_message = data.get('message', '')
+    user_thread_id = request.headers.get('thread_id')
+    
     # Use RAG service to generate response
     try:
-        result = graph.invoke({"question": user_message})
-
-        print(f"User Message: {user_message}\n\n")
-        print(f"User Query: {result['query']}\n\n")
-        print(f"Hypothetical Message: {result['hypothetical_question']}\n\n")
-        print(f"Context: {result['context']}\n\n")
-        print(f"Answer: {result['answer']}")
+        result = invoke(new_user_message, user_thread_id)
         response_message = result['answer']
     except Exception as e:
         response_message = "An error occurred while processing your request."

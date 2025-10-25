@@ -57,6 +57,7 @@ const Chat = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            'thread_id': 1
           },
           body: JSON.stringify({ message: text }),
         });

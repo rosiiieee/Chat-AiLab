@@ -63,7 +63,7 @@ for doc in all_splits:
         doc.metadata['section'] = 'campus_publication'
     elif ('7_Disciplinary_Policies' in source):
         doc.metadata['section'] = 'disciplinary_policies'
-    elif ('8_General Provisions,_Glossary,_and_Appendices' in source):
+    elif ('8_General_Provisions,_Glossary,_and_Appendices' in source):
         doc.metadata['section'] = 'general_provisions_glossary_and_appendices'
 
 # Store data
