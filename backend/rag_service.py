@@ -69,8 +69,6 @@ from langchain_core.prompts import ChatPromptTemplate
 def analyze_query(state: State):
     """ This function would return a query (QueryAnalysis: data type) which has dict of section. """
     
-    print('started analyzing query...')
-    
     # python comprehensions
     last_user_msgs = [
         message['content'] for message in state['messages'][-6:] if (message['role'] == 'user')
@@ -80,23 +78,20 @@ def analyze_query(state: State):
         f"User message {i+1}: {message}" for i, message in enumerate(last_user_msgs)
     )
 
-    print('-----\nlast_user_msg_combined: \n', last_user_msg_combined)
-
     query_prompt = ChatPromptTemplate.from_template(
         """
         Classify the **latest** user message into the appropriate section of the PLM Student Manual.
         Focus on the latest user message, but use previous ones as context if needed.
 
         Sections:
-        general_university_information: history, charter, mission, vision, values, officials, seal, emblems, colors
-        student_rights_and_responsibility: rights, responsibilities, academic integrity, freedom of expression, access to records, conduct
-        academic_policies: admissions, programs, grading, GWA, scholarships, load, residency, transfer, honors
-        student_affairs_and_services: student services, OSDS, registrar, library, health services, security, scholarships, welfare programs
-        student_councils_organizations_and_activities_policies: councils, organizations, accreditation, advisers, officer eligibility, funding, events, logo use, discipline
-        campus_publication: student publication, Ang Pamantasan, freedom of the press, editorial board, ethics, publication schedule
-        disciplinary_policies: code of conduct, offenses, penalties, suspension, expulsion, due process, investigation, mitigation
-        general_provisions_glossary_and_appendices: effectivity, amendments, glossary, dress code, RA 8049, RA 7877, RA 7079, forms, policies
-
+        - general_university_information: history, charter, mission, vision, values, officials, seal, emblems, colors
+        - student_rights_and_responsibility: rights, responsibilities, academic integrity, freedom of expression, access to records, conduct
+        - academic_policies: admissions, programs, grading, GWA, scholarships, load, residency, transfer, honors
+        - student_affairs_and_services: student services, OSDS, registrar, library, health services, security, scholarships, welfare programs
+        - student_councils_organizations_and_activities_policies: councils, organizations, accreditation, advisers, officer eligibility, funding, events, logo use, discipline
+        - campus_publication: student publication, Ang Pamantasan, freedom of the press, editorial board, ethics, publication schedule
+        - disciplinary_policies: code of conduct, offenses, penalties, suspension, expulsion, due process, investigation, mitigation
+        - general_provisions_glossary_and_appendices: effectivity, amendments, glossary, dress code, RA 8049, RA 7877, RA 7079, forms, policies
 
         User message:
         {questions}
@@ -106,24 +101,11 @@ def analyze_query(state: State):
     structured_llm = llm.with_structured_output(QueryAnalysis)
     query_prompt_filled = query_prompt.invoke({'questions': last_user_msg_combined})
     classification = structured_llm.invoke(query_prompt_filled)
-    print('done analyzing query...')
+    print('DONE: analyzing query...')
     return {"classification": classification}
 
 
 # --- HYPOTHETICAL DOCUMENT EMBEDDING NODE ---
-
-hyde_prompt = ChatPromptTemplate.from_template("""
-    Instructions:
-    - Focus on the latest user message, but use previous ones as context if needed.
-    - If the question is about Pamantasan ng Lungsod ng Maynila (PLM) or School, generate a short (2–3 sentence) *hypothetical handbook-style answer* that plausibly appears in the PLM Student Manual.
-    - If the input is just a greeting, small talk, or unrelated to PLM policies, repeat the user’s input as-is.
-    - Use a formal tone only when generating a policy answer.
-                                               
-    User messages:
-    {questions}
-
-    """)
-
 
 def generate_hypothetical(state: State): 
     last_user_msgs = [
@@ -134,11 +116,22 @@ def generate_hypothetical(state: State):
         f"User message {i+1}: {message}" for i, message in enumerate(last_user_msgs)
     )
 
-    print('generating hypothetical prompt...')
+    hyde_prompt = ChatPromptTemplate.from_template(
+        """
+        Instructions:
+        - Focus on the latest user message, but use previous ones as context if needed.
+        - If the question is about Pamantasan ng Lungsod ng Maynila (PLM) or School, generate a short (2–3 sentence) *hypothetical handbook-style answer* that plausibly appears in the PLM Student Manual.
+        - If the input is just a greeting, small talk, or unrelated to PLM policies, repeat the user’s input as-is.
+        - Use a formal tone only when generating a policy answer.
+                                                
+        User messages:
+        {questions}
+        """
+    )
 
     message_prompt = hyde_prompt.invoke({"questions": last_user_msg_combined})
     response = llm.invoke(message_prompt)
-    print('done generated hypothetical prompt')
+    print('DONE: generated hypothetical prompt')
     
     return {"hypothetical_question": response.content}
 
@@ -146,11 +139,10 @@ def generate_hypothetical(state: State):
 # --- RETRIEVAL NODE ---
 
 def retrieve(state: State):
-    print("retrieving context...")
     hyde_text = state["hypothetical_question"]
     section = state["classification"]["section"]
     retrieved_docs = vector_store.similarity_search(hyde_text, k=8, filter={'section': section})
-    print('done retrieve...')
+    print('DONE: retrieve context...')
 
     return {"context": retrieved_docs}
 
@@ -158,30 +150,8 @@ def retrieve(state: State):
 
 # --- GENERATION NODE ---
 
-prompt = ChatPromptTemplate.from_template("""
-    You are a friendly assistant specializing in Pamantasan ng Lungsod ng Maynila (PLM) rules and regulations. Answer the user's question using ONLY the provided context.
-
-    Instructions:
-    1. Read and synthesize ALL relevant context chunks.
-    2. Summarize the policy clearly, using formal terms (e.g., GWA, Maximum Residency Rule, OSDS) to ensure accuracy.
-    3. Integrate related policies or sections when needed.
-    4. If the question is NOT covered in the context, respond politely stating you do not have knowledge outside the information you are given.
-    5. Keep a conversational and engaging tone; greet the user if they start with "hi" or "hello."
-    6. Use the same language as the user's input when generating the answer.
-    7. When referring to your source, say “based on the information I have” instead of “context.”
-    8. Focus on the latest user input, but use previous ones as context if needed.
-
-    Context:
-    {context}
-
-    User input:
-    {questions}
-    """)
-
 
 def generate(state: State):
-    print('started generate...')
-
     docs_content = "\n\n".join(doc.page_content for doc in state["context"])
 
     last_msgs  = state["messages"][-8:]
@@ -190,13 +160,35 @@ def generate(state: State):
         f"{m['role'].capitalize()}: {m['content']}" for m in last_msgs
     )
 
+    prompt = ChatPromptTemplate.from_template(
+        """
+        You are a friendly assistant specializing in Pamantasan ng Lungsod ng Maynila (PLM) rules and regulations. Answer the user's question using ONLY the provided information.
+
+        Instructions:
+        1. Read and synthesize ALL relevant context chunks.
+        2. Summarize the policy clearly, using formal terms (e.g., GWA, Maximum Residency Rule, OSDS) to ensure accuracy.
+        3. Integrate related policies or sections when needed.
+        4. If the question is NOT covered in the context, respond politely stating you do not have knowledge outside the information you are given.
+        5. Keep a conversational and engaging tone; greet the user if they start with "hi" or "hello."
+        6. Use the same language as the user's input when generating the answer.
+        7. When referring to your source, say “based on the information I have” instead of “context.”
+        8. Focus on the latest user input, but use previous ones as context if needed.
+
+        Information:
+        {context}
+
+        User input:
+        {questions}
+        """
+    )
+
+
     messages = prompt.invoke({"questions": last_msg_combined, "context": docs_content}) # takes a dictionary of input variables and fills them into the template.
-    print('\n\ngenerate_last_msg_combined:\n' + last_msg_combined)
+    print('\n\n---------------------\n\nFROM GENERATE NODE (messages):\n' + last_msg_combined + '\n\n---------------------\n\n')
     
-    print('got context and putted in prompt message...')
 
     response = llm.invoke(messages)
-    print('done generate...')
+    print('DONE: generate node')
 
     return {"answer": response.content}
 
@@ -229,17 +221,17 @@ graph = graph_builder.compile(checkpointer=InMemorySaver())
 
 
 # Invoke Function
-def invoke(new_user_message: str, user_thread_id: int):
+def run_state_graph(new_user_message: str, user_thread_id: int):
 
     result = graph.invoke(
         {"new_message": new_user_message},
         config={"configurable": {"thread_id": user_thread_id}},
     )
 
-    print(f"User Message: {new_user_message}\n\n")
-    print(f"User Query: {result['classification']}\n\n")
-    print(f"Hypothetical Message: {result['hypothetical_question']}\n\n")
-    print(f"Context: {result['context']}\n\n")
+    # print(f"User Message: {new_user_message}\n\n")
+    print(f"FROM ANALYZE QUERY CLASSIFICATION: {result['classification']}\n\n")
+    print(f"FROM HYPOTHETICAL DOCUMENT EMBEDDING: {result['hypothetical_question']}\n\n")
+    print(f"FROM RETRIEVE (CONTEXT): {result['context']}\n\n")
     print(f"Answer: {result['answer']}")
 
     return result

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useId } from 'react'
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
 import './Chat.css';
@@ -19,6 +19,7 @@ import useChatAnimation from './useChatAnimation'
  *
  **/
 const Chat = () => {
+    const threadId = useId();
     const [messages, setMessages] = useState([
       {
         id: 1,
@@ -57,9 +58,8 @@ const Chat = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            'thread_id': 1
           },
-          body: JSON.stringify({ message: text }),
+          body: JSON.stringify({ message: text, thread_id: threadId }),
         });
 
         const data = await response.json();

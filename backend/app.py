@@ -1,8 +1,8 @@
+import uuid
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from langgraph.checkpoint.memory import InMemorySaver
 
-from rag_service import invoke
+from rag_service import run_state_graph
 
 app = Flask(__name__)
 CORS(app)
@@ -15,11 +15,13 @@ def hello_world():
 def chat():
     data = request.get_json()
     new_user_message = data.get('message', '')
-    user_thread_id = request.headers.get('thread_id')
+
+    # generated random thread_id for stateless conversation
+    user_thread_id = data.get('thread_id') or str(uuid.uuid4())
     
     # Use RAG service to generate response
     try:
-        result = invoke(new_user_message, user_thread_id)
+        result = run_state_graph(new_user_message, user_thread_id)
         response_message = result['answer']
     except Exception as e:
         response_message = "An error occurred while processing your request."
