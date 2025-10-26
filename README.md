@@ -13,34 +13,25 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Backend
 
-### Creating venv & installing dependencies (linux)
+### Creating venv & Installing Dependencies 
 ```
 cd backend
 
 python3 -m venv .venv
+. .venv/bin/activate                        (linux only)
 
-. .venv/bin/activate
+pip install -r requirements.txt             (recommended)
+
+
+Individually:
 
 pip install Flask
-
-pip install -U flask-cors
-
+pip install flask-cors
 pip install python-dotenv
-
-pip install --upgrade "langchain-text-splitters==0.3.0" "langchain-community==0.3.0" "langgraph==0.3.0"
-
-pip install "langchain[google-genai]==0.3.0"
-
-pip install "langchain-pinecone==0.2.0"
-
-
-v1
-pip install langchain (core)
-pip install -qU  langchain-google-genai (embedding model)
-pip install -qU langchain-community (vector db)
-pip install -qU langchain-chroma
-
-
+pip install langchain                       (core)
+pip install langchain-google-genai       (embedding model & generation)
+pip install langchain-community          (vector store)
+pip install langchain-chroma             (vector store)
 
 
 ```
@@ -48,22 +39,21 @@ pip install -qU langchain-chroma
 ### Running Flask (localhost:5000 default)
 ```
 flask --app app run
-
-flask --app app run --debug (hot reload)
-```
-### Remove tracked and staged files
-```
-git rm -r --cached backend/__pycache__
+flask --app app run --debug                 (hot reload)
 ```
 
 ### Environment
 ```
-LANGSMITH_TRACING=...
-LANGSMITH_API_KEY=...
+LANGSMITH_TRACING=...       (optional)
+LANGSMITH_API_KEY=...       (optional)
 GOOGLE_API_KEY=...
-PINECONE_API_KEY=...
 ```
 
-# export reqs
-pip list --not-required
-pip list --not-required --format=freeze > requirements.txt
+
+
+### Other Commands
+
+- Export pip to requirements.txt (top level dependencies): 
+    - pip list --not-required
+    - pip list --not-required --format=freeze > requirements.txt
+- Remove tracked and staged files: git rm -r --cached backend/__pycache__
