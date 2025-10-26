@@ -4,6 +4,8 @@ import { MessageCircle, Map } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import characterGif from '../../draft_alab_hi.gif';
+import characterGifStand from '../../draft_alab.gif';
+import glow from '../../glow.png';
 import './LandingPage.css';
 
 
@@ -89,7 +91,9 @@ const LandingPage = () => {
                 >
 
                   <motion.div
-                    animate={{y: [0, -8, 0] }}
+                    animate={{
+                      x: [-50, -50, -50],
+                      y: [0, -8, 0] }}
                     transition={{
                       duration: 2,
                       ease: "easeInOut",
@@ -104,17 +108,32 @@ const LandingPage = () => {
                 
               )}
 
-              <motion.img
-                src={characterGif}
-                alt="AiLab Character"
-                className="character-img"
-                animate={
-                  showWelcome
-                    ? { y: -40, scale: 1.1 }
-                    : { y: 0, scale: 1 }
-                }
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              />
+                <div className="character-container">
+                  <motion.img
+                    src={glow}
+                    alt="Glow effect"
+                    className="character-glow"
+                    animate={
+                      showWelcome ? 
+                      { y: [-0, -50, -40], scale: 1.1, opacity: [0.8, 1, 0.8]} : 
+                      { y: 0, scale: 1, opacity: [0.8, 1, 0.8] }                     
+                    }
+                    transition={{
+                      duration: 1,
+                      ease: "easeInOut",
+                    }}
+                  />
+
+                  <motion.img
+                    src={showWelcome ? characterGifStand : characterGif}
+                    alt="AiLab Character"
+                    className="character-img"
+                    animate={showWelcome ? 
+                      { y: [-0, -50, -40], scale: 1.1 } : 
+                      { y: 0, scale: 1 }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
+                  />
+                </div>
             </div>
 
             <div className="button-container">

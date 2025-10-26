@@ -68,15 +68,34 @@
   }
 }
 
+.character-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px; /* adjust to your layout */
+}
+
 /* Character image */
 .character-img {
+  width: clamp(6rem, 55vw, 18rem);
+  height: auto;
+  object-fit: contain;
+  z-index: 1;
+  margin: 0 auto;
+  margin-bottom: -30px;
+
+}
+
+.character-glow {
   width: clamp(6rem, 55vw, 18rem);
   height: auto;
   object-fit: contain;
   z-index: 0;
   margin: 0 auto;
   margin-bottom: -30px;
-
+  position: absolute;
 }
 
 .testd {
@@ -97,7 +116,7 @@
   position: absolute;
   top: -2px;
   right: 0;
-  transform: translateX(32px);
+  transform: translateX(12px);
   background-color: #EF75FB;
   color: #5b21b6;
   padding: 10px 20px;
