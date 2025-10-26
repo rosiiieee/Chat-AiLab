@@ -20,10 +20,13 @@ cd backend
 python3 -m venv .venv
 . .venv/bin/activate                        (linux only)
 
-pip install -r requirements.txt             (recommended)
+> Minimal requirements (If leads to error try Full requirements):
+pip install -r requirements.txt
 
+> Full requirements:          
+pip install -r requirements-full.txt
 
-Through Commands (!!!MUST input version from requirements.txt for compatibility):
+> Through Commands (!!!MUST input version from requirements text file for compatibility):
 
 pip install Flask
 pip install flask-cors
