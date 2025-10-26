@@ -129,22 +129,32 @@ const Chat = () => {
 
             {/* Chat Area */}
             <main className="chat-area">
-              {messages.map((msg, index) => (
-                <div key={index} className={`message-container ${msg.sender}`}>
-                  {msg.sender === "typing" ? (
-                    <div className="typing-indicator">
-                      <span className="typing-text">Thinking</span>
-                      <div className="typing-dot"></div>
-                      <div className="typing-dot"></div>
-                      <div className="typing-dot"></div>
-                    </div>
-                  ) : (
-                    <div className={`message-bubble ${msg.sender}`}>
-                      <p className='chat-p-text'>{msg.text}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
+              <AnimatePresence initial={false}>
+                {messages.map((msg, index) => (
+                  <motion.div
+                    key={index}
+                    className={`message-container ${msg.sender}`}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  >
+                    {msg.sender === "typing" ? (
+                      <div className="typing-indicator">
+                        <span className="typing-text">Thinking</span>
+                        <div className="typing-dot"></div>
+                        <div className="typing-dot"></div>
+                        <div className="typing-dot"></div>
+                      </div>
+                    ) : (
+                      <div className={`message_bubble ${msg.sender}`}>
+                        <p className="chat-p-text">{msg.text}</p>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
               <div ref={chatEndRef} />
             </main>
 
