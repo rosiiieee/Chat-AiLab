@@ -21,3 +21,65 @@
   transform: translateY(10px);
   animation: fadeIn 1s ease-out forwards;
 }
+
+.map-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.map-controls {
+  display: flex;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.map-wrapper {
+  position: relative;
+  width: 966px;
+  max-width: 100%;
+}
+
+.map-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* allow clicks to pass through */
+}
+
+.map-overlay circle {
+  pointer-events: all; /* circles remain clickable if needed */
+  cursor: pointer;
+}
+
+.path-info {
+  text-align: center;
+  color: white;
+}
+
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animated-line {
+  stroke-dasharray: 10 10;         /* makes it dotted/dashed */
+  stroke-dashoffset: 1000;         /* start "undrawn" */
+  animation: draw-line 7s linear infinite;
+}
+
+
+
