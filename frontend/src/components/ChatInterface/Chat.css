@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-/* ====== ROBOT SECTION ====== */
+/* ====== Alab TTS SECTION ====== */
 .alab-container {
   position: absolute;
   bottom: 150px; 
@@ -42,9 +42,6 @@
   height: auto;
   display: block;
 }
-
-
-
 
 .halo {
   width: 120px;
@@ -102,7 +99,6 @@
   background: #e879f9;
 }
 
-
 /* ====== ANIMATIONS ====== */
 @keyframes float {
   0% { transform: translateY(0); }
@@ -114,8 +110,6 @@
   0% { opacity: 0.6; transform: scale(1); }
   100% { opacity: 1; transform: scale(1.1); }
 }
-
-
 
 .backgroundch{
     background: #240B27;
@@ -844,3 +838,4 @@
                     .message-container.bot { padding-right: 35% !important; }
                     .message-container.user { padding-left: 35% !important; }
                 }
+
