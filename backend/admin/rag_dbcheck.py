@@ -27,9 +27,9 @@ vector_store = Chroma(
 # Retrieve a few stored documents
 # results = vector_store.similarity_search("Who is the President of the University?", k=5)
 # results = vector_store.similarity_search("Who is Dr. Ma. Leonora V. De Jesus", k=5)
-# results = vector_store.similarity_search("What is PLM?", k=5)
+results = vector_store.similarity_search("What is PLM?", k=5)
 # results = vector_store.similarity_search("PLM", k=5)
-results = vector_store.similarity_search("Who established plm?", k=5)
+# results = vector_store.similarity_search("Who established plm?", k=5)
 
 
 for i, doc in enumerate(results):

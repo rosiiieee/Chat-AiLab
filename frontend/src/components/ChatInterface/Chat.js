@@ -22,6 +22,7 @@ import './Chat.css';
  **/
 const Chat = () => {
     const threadId = useId();
+    // const [threadId, setThreadId] = useState("0") //for debugging!!!!
     const [messages, setMessages] = useState([
         {
             id: 1,
@@ -121,6 +122,8 @@ const Chat = () => {
 
                     {/* Chat Area */}
                     <main className="chat-area">
+                        {/* for debugging!!!! */}
+                        {/* <input type='text' value={threadId} onChange={(e) => setThreadId(e.target.value)} /> */}
                         <AnimatePresence initial={false}>
                             {messages.map((msg, index) => (
                                 <motion.div

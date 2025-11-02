@@ -216,13 +216,18 @@ graph_builder.add_sequence([
 ])
 
 graph_builder.add_edge(START, 'append_user_message')
-
 graph = graph_builder.compile(checkpointer=InMemorySaver())
+
+#cleanup func
+def purge_stale_threads(user_thread_ids: list[str]):
+    for thread_id in user_thread_ids:
+        graph.checkpointer.delete_thread(thread_id)
 
 
 # Invoke Function
-def run_state_graph(new_user_message: str, user_thread_id: int):
-
+def run_state_graph(new_user_message: str, user_thread_id: str):
+    #check thread content (dbg)
+    print(f"(debug) THREAD {user_thread_id}: {graph.get_state({"configurable": {"thread_id": user_thread_id}})}")
     result = graph.invoke(
         {"new_message": new_user_message},
         config={"configurable": {"thread_id": user_thread_id}},
