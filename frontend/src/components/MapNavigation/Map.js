@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapPin, Search, Send } from "lucide-react";
 import plmmap from "./map.png";
 import customMonument from "./monument.png"; 
@@ -8,8 +9,10 @@ import phFlagIcon from "./ph_flag.png";
 import fountainIcon from "./fountain.png"; 
 import chapelIcon from "./chapel.png"; 
 import muralIcon from "./mural.png"; 
+import { buildings } from "./buildingsData";
 
 export default function Map() {
+  const navigate = useNavigate();
   const [selectedPath, setSelectedPath] = useState([]);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
@@ -19,54 +22,79 @@ export default function Map() {
   const imgRef = useRef(null);
 
   useEffect(() => {
-    const handleResize = () => {
+    const updateDimensions = () => {
       if (imgRef.current) {
         const { width, height } = imgRef.current.getBoundingClientRect();
-        setDimensions({ width, height });
+        if (width > 0 && height > 0) {
+          setDimensions({ width, height });
+        }
       }
     };
-    handleResize();
+
+    const timer = setTimeout(updateDimensions, 100);
+    
+    const img = imgRef.current;
+    if (img) {
+      img.addEventListener('load', updateDimensions);
+    }
+
+    let resizeTimer;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateDimensions, 150);
+    };
+    
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", handleResize);
+      if (img) {
+        img.removeEventListener('load', updateDimensions);
+      }
+    };
   }, []);
 
   const nodes = [
-    { id: "Facade", x: 0.19, y: 0.78, type: "hotspot" },
+    { id: "Facade", x: 0.17, y: 0.80, type: "hotspot" },
     { id: "1", x: 0.22, y: 0.83 },
     { id: "2", x: 0.425, y: 0.83 },
     { id: "3", x: 0.425, y: 0.9 },
-    { id: "UAC", x: 0.29, y: 0.7, type: "monument" },
+    { id: "UAC", x: 0.30, y: 0.67, type: "monument" },
     { id: "Canteen", x: 0.5, y: 0.79, type: "gazebo" },
     { id: "4", x: 0.565, y: 0.79 },
     { id: "5", x: 0.565, y: 0.74 },
     { id: "6", x: 0.46, y: 0.71 },
     { id: "GCA", x: 0.51, y: 0.92, type: "hotel" },
-    { id: "GV", x: 0.565, y: 0.86, type: "hotel" },
-    { id: "GK", x: 0.82, y: 0.78, type: "hotel" },
+    { id: "GV", x: 0.69, y: 0.86, type: "hotel" },
+    { id: "GK", x: 0.77, y: 0.79, type: "hotel" },
     { id: "7", x: 0.82, y: 0.74 },
     { id: "8", x: 0.85, y: 0.74 },
-    { id: "GB", x: 0.88, y: 0.48, type: "hotel" },
+    { id: "GB", x: 0.90, y: 0.50, type: "hotel" },
     { id: "9", x: 0.85, y: 0.48 },
     { id: "10", x: 0.85, y: 0.255 },
-    { id: "Gym", x: 0.79, y: 0.2, type: "gazebo" },
+    { id: "Gym", x: 0.84, y: 0.14, type: "gazebo" },
     { id: "11", x: 0.61, y: 0.255 },
     { id: "12", x: 0.79, y: 0.255 },
-    { id: "GL", x: 0.61, y: 0.19, type: "hotel" },
+    { id: "GL", x: 0.63, y: 0.19, type: "hotel" },
     { id: "13", x: 0.45, y: 0.255 },
     { id: "14", x: 0.45, y: 0.16 },
     { id: "JAA", x: 0.48, y: 0.16, type: "hotel" },
     { id: "SSC Office", x: 0.36, y: 0.15, type: "monument" },
-    { id: "Entrep BLDG", x: 0.37, y: 0.08, type: "hotel" },
+    { id: "Entrep BLDG", x: 0.38, y: 0.08, type: "hotel" },
     { id: "15", x: 0.48, y: 0.08 },
     { id: "16", x: 0.29, y: 0.255 },
     { id: "17", x: 0.29, y: 0.1 },
     { id: "18", x: 0.29, y: 0.475 },
-    { id: "Executive BLDG", x: 0.54, y: 0.06, type: "hotel" },
-    { id: "Chapel", x: 0.22, y: 0.1, type: "chapel" }, 
-    { id: "GA", x: 0.08, y: 0.44, type: "hotel" },
-    { id: "GEE", x: 0.15, y: 0.54, type: "hotel" },
+    { id: "Executive BLDG", x: 0.61, y: 0.06, type: "hotel" },
+    { id: "Chapel", x: 0.12, y: 0.1, type: "chapel" },
+    { id: "GA", x: 0.07, y: 0.43, type: "hotel" },
+    { id: "GEE", x: 0.15, y: 0.53, type: "hotel" },
     { id: "19", x: 0.19, y: 0.54 },
     { id: "20", x: 0.15, y: 0.44 },
+    { id: "Tanghalang Bayan", x: 0.51, y: 0.57, type: "hotel" },
+    { id: "Pride Hall", x: 0.46, y: 0.64, type: "hotel" }
   ];
 
   const graph = {
@@ -86,9 +114,11 @@ export default function Map() {
     Chapel: ["17"],
     GA: ["20"],
     GEE: ["19", "20"],
+    "Tanghalang Bayan": ["3", "6", "18", "Pride Hall"],
+    "Pride Hall": ["Tanghalang Bayan", "3", "18"],
     "1": ["2", "UAC", "Facade"],
     "2": ["Canteen", "1", "3", "GV"],
-    "3": ["2", "GCA"],
+    "3": ["2", "GCA", "Tanghalang Bayan", "Pride Hall"],
     "4": ["Canteen", "GV", "5"],
     "5": ["4", "6", "7"],
     "6": ["18", "2", "5"],
@@ -103,7 +133,7 @@ export default function Map() {
     "15": ["14", "Executive BLDG"],
     "16": ["13", "17", "18"],
     "17": ["Entrep BLDG", "Chapel", "16"],
-    "18": ["6", "16", "19", "UAC"],
+    "18": ["6", "16", "19", "UAC", "Tanghalang Bayan", "Pride Hall"],
     "19": ["18", "GEE", "Facade", "UAC"],
     "20": ["GEE", "GA"],
   };
@@ -192,6 +222,10 @@ export default function Map() {
     setEnd(searchTo);
   };
 
+  const handleBuildingClick = (building) => {
+    navigate(`/building/${building.id}`);
+  };
+
   const namedNodes = nodes.filter(n => isNaN(n.id));
 
   return (
@@ -266,47 +300,65 @@ export default function Map() {
           </div>
         </div>
 
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', width: '100%' }}>
           <div className="map-container">
             <img ref={imgRef} src={plmmap} alt="Campus Map" className="map-image" />
-            <svg className="map-overlay">
-              {selectedPath.length > 1 &&
-                selectedPath.map((id, i) => {
-                  const next = selectedPath[i + 1];
-                  if (!next) return null;
-                  const A = getNode(id);
-                  const B = getNode(next);
-                  return (
-                    <line
-                      key={`${id}-${next}`}
-                      className="animated-line"
-                      x1={A.x * dimensions.width}
-                      y1={A.y * dimensions.height}
-                      x2={B.x * dimensions.width}
-                      y2={B.y * dimensions.height}
-                      stroke="#FF1493"
-                      strokeWidth="4"
-                      strokeLinecap="round"
+            {dimensions.width > 0 && dimensions.height > 0 && (
+              <svg 
+                className="map-overlay"
+                viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+                preserveAspectRatio="xMidYMid meet"
+              >
+                {selectedPath.length > 1 &&
+                  selectedPath.map((id, i) => {
+                    const next = selectedPath[i + 1];
+                    if (!next) return null;
+                    const A = getNode(id);
+                    const B = getNode(next);
+                    return (
+                      <line
+                        key={`${id}-${next}`}
+                        className="animated-line"
+                        x1={A.x * dimensions.width}
+                        y1={A.y * dimensions.height}
+                        x2={B.x * dimensions.width}
+                        y2={B.y * dimensions.height}
+                        stroke="#FF1493"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                      />
+                    );
+                  })}
+                
+                {/* Building markers - NOW FULLY TRANSPARENT BUT CLICKABLE */}
+                {buildings.map((building) => (
+                  <g key={building.id}>
+                    <circle
+                      cx={building.x * dimensions.width}
+                      cy={building.y * dimensions.height}
+                      r="20"
+                      fill="transparent"
+                      stroke="transparent"
+                      strokeWidth="3"
+                      opacity="0"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleBuildingClick(building)}
                     />
-                  );
-                })}
-              {nodes.map((node) => {
-                if (node.type === "chapel") {
-                  const iconSize = 24;
-                  return (
-                    <image
-                      key={node.id}
-                      href={chapelIcon}
-                      x={node.x * dimensions.width - iconSize / 2}
-                      y={node.y * dimensions.height - iconSize / 2}
-                      height={iconSize}
-                      width={iconSize}
-                    />
-                  );
-                }
-                return null;
-              })}
-            </svg>
+                    <text
+                      x={building.x * dimensions.width}
+                      y={building.y * dimensions.height + 5}
+                      fill="transparent"
+                      fontSize="12"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                      style={{ cursor: 'pointer', pointerEvents: 'none' }}
+                    >
+                      {building.code}
+                    </text>
+                  </g>
+                ))}
+              </svg>
+            )}
           </div>
 
           <div className="instruction-box">

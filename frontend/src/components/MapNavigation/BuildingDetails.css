@@ -1,0 +1,417 @@
+.building-details-container {
+  background: linear-gradient(180deg, #7B3F7E 0%, #9F30A4 50%, #7B3F7E 100%);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  padding-bottom: 0rem;
+}
+
+/* Header */
+.building-header {
+  padding: 1.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #240B27;
+  background: linear-gradient(198deg, rgba(36, 11, 39, 1) 5%, rgba(159, 48, 164, 1) 50%, rgba(36, 11, 39, 1) 95%);
+}
+
+.back-button-new {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  color: white;
+  font-size: 0.80rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: background 0.2s;
+  letter-spacing: 0.5px;
+  height: 25px;
+  width: 85px;
+  margin: 1.5rem 0 0 1.5rem;
+}
+
+.back-button-new:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.header-title {
+  color: white;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin: 0;
+  margin-left: 2.8rem;
+  margin-top: 0.6rem;
+}
+
+/* Map Section */
+.map-section {
+  padding: 0 1rem 1rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+/* Layout adjustments when no 3D image */
+.map-section.no-3d-layout {
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.map-section.no-3d-layout .campus-map-container {
+  width: 95% !important;
+  margin-top: 0.5rem;
+}
+
+/* 3D Building Container */
+.building-3d-container {
+  width: 70%;
+  max-width: 320px;
+  background: white;
+  border-radius: 80px;
+  padding: 0rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  margin-bottom: -1.3rem;
+  margin-right: -2rem;
+  margin-top: -1rem;
+  z-index: 10;
+  position: relative;
+}
+
+.building-3d-image {
+  width: 100%;
+  height: 250px;
+  display: block;
+  border-radius: 80px;
+  max-height: 280px;
+  object-fit: cover;
+}
+
+/* Campus Map Container */
+.campus-map-container {
+  position: relative;
+  width: 90% !important;
+  margin: 0 auto !important;
+  border-radius: 0px;
+  overflow: visible;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+
+.campus-map-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Animated Marker */
+.building-marker-pulse {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.marker-gif {
+  width: 80px;
+  height: 80px;
+  display: block;
+  transform: translate(-50%, -50%);
+}
+
+/* Facilities Scrollable Card */
+.facilities-scroll-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px 30px 0 0;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 30vh;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Building Name Card */
+.building-name-card {
+  background: white;
+  border-radius: 20px;
+  margin: 1rem auto;
+  padding: 1rem;
+  max-width: 250px;
+  width: calc(100% - 2rem);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.building-name-simple {
+  color: #333;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.building-name-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.facilities-divider {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #9F30A4, #FF1493);
+  border-radius: 2px;
+  margin: 0 auto 1.5rem auto;
+}
+
+.facilities-scroll-content {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.5rem;
+}
+
+.facilities-scroll-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.facilities-scroll-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.facilities-scroll-content::-webkit-scrollbar-thumb {
+  background: #9F30A4;
+  border-radius: 10px;
+}
+
+.facilities-scroll-content::-webkit-scrollbar-thumb:hover {
+  background: #7B3F7E;
+}
+
+/* Floor Sections */
+.floor-section {
+  background: #F8F4F9;
+  border-radius: 15px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.floor-section:last-child {
+  margin-bottom: 0;
+}
+
+.floor-title {
+  color: #9F30A4;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.3px;
+}
+
+.floor-facilities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.facility-item-scroll {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.facility-item-scroll::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #9F30A4;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Building Not Found */
+.building-not-found {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: white;
+}
+
+.building-not-found h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.back-button-simple {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-button-simple:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .header-title {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    margin-left: 2.8rem;
+    margin-top: 0.6rem;
+  }
+
+  .building-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .back-button-new {
+    margin-bottom: 0.5rem;
+  }
+
+  .map-section {
+    position: relative;
+    padding-top: 0rem;
+    margin-top: -1rem;
+    padding-right: 0;
+    overflow: visible;
+  }
+
+  .map-section.no-3d-layout {
+    margin-top: 5rem;
+    align-items: center;
+  }
+
+  .map-section.no-3d-layout .campus-map-container {
+    width: 95% !important;
+  }
+
+  .building-3d-container {
+    width: 70%;
+    max-width: 320px;
+    position: relative;
+    margin-right: -2rem;
+    margin-bottom: -1.3rem;
+    margin-top: -1rem;
+    z-index: 10;
+  }
+
+  .building-3d-image {
+    height: 250px;
+    max-height: 280px;
+  }
+
+  .campus-map-container {
+    width: 90% !important; 
+    margin: 0 auto !important; 
+  }
+
+  .facilities-scroll-card {
+    padding: 1rem;
+    max-height: 55vh;
+  }
+
+  .building-name-title {
+    font-size: 1.1rem;
+  }
+
+  .floor-section {
+    padding: 0.75rem 1rem;
+  }
+
+  .floor-title {
+    font-size: 0.9rem;
+  }
+
+  .facility-item-scroll {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .building-3d-container {
+    width: 75%;
+    max-width: 300px;
+    position: relative;
+    margin-right: -2.5rem;
+    margin-bottom: -1.3rem;
+    margin-top: -1rem;
+    z-index: 10;
+  }
+
+  .building-3d-image {
+    height: 230px;
+    max-height: 260px;
+  }
+
+  .campus-map-container {
+    width: 85% !important; 
+    margin: 0 auto !important;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: 769px) {
+  .map-section {
+    position: relative;
+    padding-top: 0rem;
+    margin-top: -1rem;
+    padding-right: 0;
+    overflow: visible;
+  }
+
+  .building-3d-container {
+    width: 70%;
+    max-width: 320px;
+    margin-right: -2rem;
+    margin-bottom: -1.3rem;
+    margin-top: -1rem;
+  }
+
+  .building-3d-image {
+    height: 250px;
+    max-height: 280px;
+  }
+
+  .campus-map-container {
+    width: 90% !important;
+    margin: 0 auto !important;
+  }
+
+  .facilities-scroll-card {
+    padding: 1.5rem;
+    max-height: 60vh;
+  }
+}

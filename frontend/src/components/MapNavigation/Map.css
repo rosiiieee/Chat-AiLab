@@ -507,3 +507,62 @@
     font-size: 1rem;
   }
 }
+
+/* Building Marker Styles */
+.map-overlay circle {
+  pointer-events: all;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.map-overlay circle:hover {
+  opacity: 1 !important;
+ /* transform: scale(1.1); */
+  filter: drop-shadow(0 0 8px rgba(159, 48, 164, 0.6));
+  cursor: pointer;
+}
+
+.map-overlay text {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Smooth scrollbar for modal */
+.modal-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  background: #9F30A4;
+  border-radius: 10px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+  background: #240B27;
+}
+
+/* Animation for modal */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-container {
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+/* Ensure modal is above everything */
+.modal-overlay {
+  z-index: 9999;
+}
