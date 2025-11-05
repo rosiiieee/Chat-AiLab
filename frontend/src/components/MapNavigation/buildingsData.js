@@ -60,13 +60,31 @@ export const buildings = [
         name: "Ground Floor",
         facilities: [
           "Physical Facilities Maintenance Office (PFMO)",
+          "Stockroom",
+          "Pump Room",
+          "Genset / Electrical Room",
+          "College of Physical Therapy (CPT-Office Clinic)",
+          "Classrooms 101 - 103",
+          "Room 104 - OSDS, DMST, CWTS, NSTP",
+          "Male/Female Comfort Room"
         ]
       },
       {
         name: "Second Floor",
         facilities: [
           "Commission on Audit (COA) Office, Storage Room",
-         
+          "CADD Room",
+          "College of Architecture and Urban Planning (CAUP-Office)",
+          "Audio Visual Room (AVR) 1A - 1B, 2A - 2B",
+          "Male/Female Comfort Room"
+        ]
+      },
+      {
+        name: "Third Floor",
+        facilities: [
+          "Drawing Laboratory 2",
+          "Classrooms 301 - 309",
+          "Male/Female Comfort Room"
         ]
       }
     ],
@@ -94,18 +112,47 @@ export const buildings = [
           "Graduate School of Law (GSL)",
           "University ICT Center",
           "Manuel V. Pangilinan",
+          "Mechanical Engineering Laboratory",
+          "Male/Female, LGBT Comfort Room"
         ]
       },
       {
         name: "Second Floor",
         facilities: [
           "PLDT-SMART Foundation Hall",
-          "Computer Laboratory 1",
-          "Computer Laboratory 2", 
-          "Room GV - 204 to 209",
+          "Computer Laboratory - 1",
+          "Computer Laboratory - 2", 
+          "Rooms GV - 204 to 209",
           "Internal Audit Office (IAO)",
           "Office of the Vice President for Academic Affairs (OVPAA)",
           "Female Comfort Room",
+        ]
+      },
+      {
+        name: "Third Floor",
+        facilities: [
+          "One Meralco Foundation Hall",
+          "Accenture",
+          "Rooms GV - 304 to 310", 
+          "Ang Pamantasan - AP",
+          "CET College (Dean's & Chairperson's Office",
+          "Graduate School of Engineering (GSE)",
+          "Male Comfort Room",
+        ]
+      },
+      {
+        name: "Fourth Floor",
+        facilities: [
+          "Computer Laboratory - 3",
+          "Computer Laboratory - 4", 
+          "Computer Laboratory Office (CLO)"
+        ]
+      },
+      {
+        name: "Fifth Floor",
+        facilities: [
+          "Drawing Room - 1",
+          "Drawing Room - 2", 
         ]
       }
     ],
@@ -125,12 +172,49 @@ export const buildings = [
         name: "Basement Floor",
         facilities: [
           "University Library",
+          "Filipiniana Section",
+          "Graduate School Section",
+          "Periodical Section",
+          "Health & Science Section",
+          "Technical Section",
+          "Classroom (Basement)",
+          "Thera Lab",
+          "Mabuhay Integrated Learning Center",
+          "Physical Facilities & Maintenance Office (PFMO)",
+          "Male/Female Comfort Room"
+
         ]
       },
       {
         name: "Ground Floor",
         facilities: [
           "University Library",
+          "Circulation Area",
+          "Reading Area",
+          "Librarian Office",
+          "Internet Section",
+          "Multi Media",
+          "Male/Female Comfort Room"
+        ]
+      },
+      {
+        name: "Second Floor",
+        facilities: [
+          "Classrooms 200 -206",
+          "College of Law Office",
+          "Moot Court",
+          "College of Law Library",
+          "Male/Female Comfort Room"
+        ]
+      },
+      {
+        name: "Third Floor",
+        facilities: [
+          "College of Nursing (CN) / GSHS Office",
+          "College of Nursing AVR / Laboratory",
+          "Classrooms 301 - 308",
+          "Bukod Tanging Bulwagan",
+          "Male/Female Comfort Room"
         ]
       }
     ],
@@ -154,7 +238,7 @@ export const buildings = [
           "Science Laboratory Stockroom",
           "University Research Center",
           "Forum Hall",
-          "Room 106 (Psychology Laboratory",
+          "Room 106 (Psychology Laboratory)",
           "Human Anatomy Laboratory Office",
         ]
       },
@@ -164,6 +248,21 @@ export const buildings = [
           "PMGAI Office",
           "CM Student Council Room",
           "Student's Lounge",
+          "Discussion Rooms 201 - 203",
+          "Classrooms 208 - 209",
+          "Central Laboratory Office",
+          "Physiology/Biochemistry Pharmacology Laboratory Room - 201",
+          "Publication-Guidance Stockroom",
+          "College of Medicine Administrative Office",
+          "Male/Female Comfort Room"
+        ]
+      },
+      {
+        name: "Second Floor",
+        facilities: [
+          "Classrooms 301 - 305",
+          "CM Audio Visual Room",
+          "Male/Female Comfort Room"
         ]
       }
     ],
@@ -187,7 +286,7 @@ export const buildings = [
           "Badminton Court",
           "Gym Office",
           "PCACS Stockroom",
-          "Male / Female Comfort Room, Shower Room"
+          "Male/Female Comfort Room, Shower Room"
         ]
       },
       {
@@ -217,7 +316,38 @@ export const buildings = [
       },
       {
         name: "Second Floor",
-        facilities: ["College of Humanities and Social Sciences Office", "College of Business Administration Office", "College of Accountancy Office", "College of Public Administration Office", "Faculty and Program Chair", "Department of Music", "Department of Social Work",]
+        facilities: [
+          "College of Humanities and Social Sciences Office", 
+          "College of Business Administration Office", 
+          "College of Accountancy Office", 
+          "College of Public Administration Office", 
+          "Faculty and Program Chair", 
+          "Department of Music", 
+          "Department of Social Work"
+        ]
+      },
+      {
+        name: "Third Floor",
+        facilities: [
+          "Violin Room", 
+          "Voice Room", 
+          "Piano Room"
+        ]
+      },
+      {
+        name: "Fifth Floor",
+        facilities: [
+          "Radio Laboratory", 
+          "Faculty Lounge"
+        ]
+      },
+      {
+        name: "Sixth Floor",
+        facilities: [
+          "College of Science Office", 
+          "Biology Instrumentation Room", 
+          "Chemistry Laboratory"
+        ]
       }
     ],
   },
@@ -299,7 +429,13 @@ export const buildings = [
     floors: [
       {
         name: "Ground Floor",
-        facilities: ["College of Information Systems and Technology Management", "Procurement Office", "Office of the Chairman / Board of Regents", "Office of the University Secretary", "Male/Female Comfort Room"]
+        facilities: [
+          "College of Information Systems and Technology Management", 
+          "Procurement Office", 
+          "Office of the Chairman / Board of Regents", 
+          "Office of the University Secretary", 
+          "Male/Female Comfort Room"
+        ]
       },
       {
         name: "Second Floor",
@@ -320,11 +456,32 @@ export const buildings = [
     floors: [
       {
         name: "Ground Floor",
-        facilities: ["Graduate School of Law", "Finance Office",]
+        facilities: [
+          "Graduate School of Law", 
+          "Finance Office",
+        ]
       },
       {
         name: "Second Floor",
-        facilities: ["Office of Executive Vice President", "Office of the President", "Classrooms 201-203, 206", "Audio Visual Room", "Laboratory Room 204-205", "Male/Female Comfort Room"]
+        facilities: [
+          "Office of Executive Vice President", 
+          "Office of the President", 
+          "Classrooms 201 - 203, 206", 
+          "Audio Visual Room", 
+          "Laboratory Rooms 204 - 205", 
+          "Male/Female Comfort Room"
+        ]
+      },
+      {
+        name: "Third Floor",
+        facilities: [
+          "Office of the Vice President for Administration", 
+          "Office of the University Secretary", 
+          "Office of the University Legal Counsel", 
+          "Classrooms 301 - 305, 308 - 309", 
+          "Laboratory Rooms 306 - 307", 
+          "Male/Female Comfort Room"
+        ]
       }
     ],
   },

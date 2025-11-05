@@ -211,38 +211,33 @@
 
 /* Floor Sections */
 .floor-section {
-  background: #F8F4F9;
-  border-radius: 15px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
-}
-
-.floor-section:last-child {
-  margin-bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .floor-title {
-  color: #9F30A4;
-  font-size: 1rem;
   font-weight: 700;
-  margin: 0 0 0.75rem 0;
-  letter-spacing: 0.3px;
+  font-size: 1rem;
+  color: #7B3F7E;
+  margin-bottom: 0.5rem;
 }
 
 .floor-facilities-list {
   list-style: none;
-  padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 0;
 }
 
 .facility-item-scroll {
-  color: #555;
+  color: #333;
   font-size: 0.9rem;
-  line-height: 1.5;
-  padding-left: 1.25rem;
+  line-height: 1.4;
+  padding-left: 1.3rem;
   position: relative;
 }
 
@@ -251,9 +246,35 @@
   position: absolute;
   left: 0;
   color: #9F30A4;
-  font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
+
+.floor-section:hover {
+  box-shadow: 0 6px 16px rgba(159, 48, 164, 0.25);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+.floor-section:nth-child(1) {
+  background: #deb3e6;
+}
+
+.floor-section:nth-child(2) {
+  background: #ce9be0; 
+}
+
+.floor-section:nth-child(3) {
+  background: #d389df; 
+}
+
+.floor-section:nth-child(4) {
+  background: #ce68e8; 
+}
+
+.floor-section:nth-child(5) {
+  background: #c25ee7;
+}
+
 
 /* Building Not Found */
 .building-not-found {
