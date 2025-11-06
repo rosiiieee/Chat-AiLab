@@ -95,6 +95,27 @@
   object-fit: cover;
 }
 
+/* UAC Portrait Container Styles */
+.uac-3d-container {
+  width: 55%; 
+  max-width: 180px; 
+  margin-right: -2rem; 
+  margin-left: auto;   
+  margin-top: -1rem;
+  margin-bottom: -1.3rem;
+  border-radius: 85px; 
+  z-index: 10; 
+  position: relative; 
+}
+
+.uac-3d-container .building-3d-image {
+  width: 100%;
+  height: 250px;
+  max-height: 250px; 
+  border-radius: 85px;
+  object-fit: cover; 
+}
+
 /* Campus Map Container */
 .campus-map-container {
   position: relative;
@@ -354,6 +375,16 @@
     max-height: 280px;
   }
 
+  @media (max-width: 768px) {
+  .uac-3d-container {
+    width: 60%;
+    max-width: 220px; 
+  }
+  .uac-3d-container .building-3d-image {
+    height: 270px; 
+    max-height: 270px;
+  }
+}
   .campus-map-container {
     width: 90% !important; 
     margin: 0 auto !important; 
@@ -396,6 +427,15 @@
     height: 230px;
     max-height: 260px;
   }
+  .uac-3d-container {
+    width: 65%;
+    max-width: 170px; 
+    margin-right: -1.5rem;
+  }
+  .uac-3d-container .building-3d-image {
+    height: 250px; 
+    max-height: 250px;
+  }
 
   .campus-map-container {
     width: 85% !important; 
@@ -425,7 +465,15 @@
     height: 250px;
     max-height: 280px;
   }
-
+.uac-3d-container {
+    width: 55%; 
+    max-width: 180px; 
+    margin-right: -2rem;
+  }
+  .uac-3d-container .building-3d-image {
+    height: 250px; 
+    max-height: 250px;
+  }
   .campus-map-container {
     width: 90% !important;
     margin: 0 auto !important;

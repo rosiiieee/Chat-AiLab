@@ -23,7 +23,7 @@ export default function BuildingDetails() {
   ];
 
   const showOnlyName = buildingsWithoutScroll.includes(building?.id);
-
+  const isUAC = building?.id === 'UAC';
   if (!building) {
     return (
       <div className="building-details-container">
@@ -51,7 +51,7 @@ export default function BuildingDetails() {
       <div className={`map-section ${!building.floorPlanImage ? 'no-3d-layout' : ''}`}>
         {/* 3D Building Image - Only show if exists */}
         {building.floorPlanImage && (
-          <div className="building-3d-container">
+          <div className={`building-3d-container ${isUAC ? 'uac-3d-container' : ''}`}>
             <img 
               src={building.floorPlanImage} 
               alt={`${building.name} Floor Plan`}
