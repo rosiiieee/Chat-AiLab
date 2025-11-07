@@ -5,6 +5,8 @@ import draft_alab_hi from "../../draft_alab_hi.gif";
 import flamehead from "../../flamehead.gif";
 import useChatAnimation from "./useChatAnimation";
 import "./Chat.css";
+import {Mic, MicOff} from "lucide-react";
+import { Send } from "lucide-react";
 
 export default function ChatTTS() {
   const navigate = useNavigate();
@@ -129,7 +131,7 @@ export default function ChatTTS() {
         <div className="app-container">
           {/* Header */}
           <header className="header">
-            <h1 className="header-title">Main Title</h1>
+            <h1 className="header-title">Chat Ailab</h1>
             <button className="logo-button" onClick={() => navigate("/chat")}>
               <div className="icon-logo-container">
                 <img src={flamehead} className="icon-md" alt="flamehead" />
@@ -191,94 +193,104 @@ export default function ChatTTS() {
           {/* Footer Input */}
           <footer className="footer">
             {/* Suggestion Buttons */}
-                        <div className="suggestions-container">
-                            <button
-                                onClick={() => handleSuggestionClick("What is AiLab?")}
-                                className="suggestion-button"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="icon-sm"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                                    />
-                                </svg>
-                                What is AiLab?
-                            </button>
-                            <button
-                                onClick={() => handleSuggestionClick("Uniform")}
-                                className="suggestion-button"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="icon-sm"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                    />
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M9 12h6"
-                                    />
-                                </svg>
-                                Uniform
-                            </button>
-                            <button
-                                onClick={() => handleSuggestionClick("FAQs")}
-                                className="suggestion-button"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="icon-sm"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
-                                FAQs
-                            </button>
-                        </div>
-
-            <div className="input-container">
-              <input
-                type="text"
-                placeholder="Type your message here..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyPress}
-                className="message-input"
-              />
+            <div className="suggestions-container">
               <button
-                className={`mic-button ${isListening ? "listening" : ""}`}
+                onClick={() => handleSuggestionClick("What is AiLab?")}
+                className="suggestion-button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon-sm"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+                What is AiLab?
+              </button>
+              <button
+                onClick={() => handleSuggestionClick("Uniform")}
+                className="suggestion-button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon-sm"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12h6"
+                  />
+                </svg>
+                Uniform
+              </button>
+              <button
+                onClick={() => handleSuggestionClick("FAQs")}
+                className="suggestion-button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon-sm"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                FAQs
+              </button>
+            </div>
+
+            {/* Input Wrapper - Contains input container and external mic */}
+            <div className="input-wrapper">
+              <div className="input-container">
+                <input
+                  type="text"
+                  placeholder="Type your message here..."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  className="message-input"
+                />
+                <button
+                  className="send-button"
+                  onClick={() => handleSend(inputValue)}
+                  title="Send message"
+                >
+                  <Send size={22} />
+                </button>
+              </div>
+
+              {/* Mic Button - Outside and Separate */}
+              <button
+                className={`mic-button-external ${isListening ? "listening" : ""}`}
                 onMouseDown={startListening}
                 onMouseUp={stopListening}
                 onTouchStart={startListening}
                 onTouchEnd={stopListening}
+                title={isListening ? "Listening..." : "Hold to speak"}
               >
-                🎙️
-              </button>
-              <button className="send-button" onClick={() => handleSend(inputValue)}>
-                ➤
+                {isListening ? <MicOff size={24} /> : <Mic size={24} />}
               </button>
             </div>
           </footer>

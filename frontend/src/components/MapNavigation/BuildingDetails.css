@@ -1,19 +1,30 @@
+/* ✅ OPTIMIZED: Single background with gradient on main container */
 .building-details-container {
-  background: linear-gradient(180deg, #7B3F7E 0%, #9F30A4 50%, #7B3F7E 100%);
+  background: 
+    linear-gradient(198deg, 
+      rgba(36, 11, 39, 0.92) 5%, 
+      rgba(159, 48, 164, 0.85) 50%, 
+      rgba(36, 11, 39, 0.92) 95%
+    ),
+    url('../../PLM.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
   padding-bottom: 0rem;
 }
 
-/* Header */
+/* ✅ OPTIMIZED: Transparent header - inherits background */
 .building-header {
   padding: 1.5rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  background: #240B27;
-  background: linear-gradient(198deg, rgba(36, 11, 39, 1) 5%, rgba(159, 48, 164, 1) 50%, rgba(36, 11, 39, 1) 95%);
+  background: rgba(36, 11, 39, 0.4);
+  backdrop-filter: blur(10px);
 }
 
 .back-button-new {
@@ -296,7 +307,9 @@
   background: #c25ee7;
 }
 
-
+.floor-section:nth-child(6) {
+  background: #d45fff;
+}
 /* Building Not Found */
 .building-not-found {
   text-align: center;

@@ -6,6 +6,7 @@ import flamed from '../../alab_head.png';
 import useChatAnimation from './useChatAnimation'
 import React from 'react';
 import './Chat.css';
+import { Send } from "lucide-react";
 
 /**
  *
@@ -233,24 +234,11 @@ const Chat = () => {
                             />
 
                             <button
-                                onClick={() => handleSend(inputValue)}
-                                className="send-button"
-                                disabled={!inputValue.trim()}
+                              onClick={() => handleSend(inputValue)}
+                              className="send-button"
+                              disabled={!inputValue.trim()}
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="icon-md"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                                    />
-                                </svg>
+                              <Send size={22} strokeWidth={2} />
                             </button>
                         </div>
                     </footer>

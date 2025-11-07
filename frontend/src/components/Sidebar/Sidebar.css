@@ -30,14 +30,24 @@
   transition: opacity 0.3s;
 }
 
-/* Sidebar Container */
+/* Sidebar Container - WITH BACKGROUND IMAGE + GRADIENT OVERLAY */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
   width: 288px;
-  background: linear-gradient(to bottom, #1f0224, #ba62cc);
+  /* UPDATED: Vibrant gradient overlay on top of background image */
+  background: 
+     linear-gradient(198deg, 
+      rgba(36, 11, 39, 0.92) 5%, 
+      rgba(159, 48, 164, 0.85) 50%, 
+      rgba(36, 11, 39, 0.92) 95%
+    ),
+    url('../../PLM.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   z-index: 50;
   transform: translateX(-100%);
   transition: transform 0.3s ease-in-out;
@@ -190,4 +200,4 @@
 
 .sidebar-exit-btn:hover {
   background-color: rgba(88, 28, 135, 0.5);
-} 
+}

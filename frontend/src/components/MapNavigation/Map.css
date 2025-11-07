@@ -4,9 +4,19 @@
   box-sizing: border-box;
 }
 
+/* ✅ OPTIMIZED: Single background image with gradient overlay on main container only */
 .tour-ailab-container {
-  background: #240B27;
-  background: linear-gradient(198deg, rgba(36, 11, 39, 1) 5%, rgba(159, 48, 164, 1) 50%, rgba(36, 11, 39, 1) 95%);
+  background: 
+    linear-gradient(198deg, 
+      rgba(36, 11, 39, 0.92) 5%, 
+      rgba(159, 48, 164, 0.85) 50%, 
+      rgba(36, 11, 39, 0.92) 95%
+    ),
+    url('../../PLM.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   padding: 0rem;
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
@@ -14,9 +24,10 @@
   width: 100%;
 }
 
+/* ✅ OPTIMIZED: Transparent header - inherits background from parent */
 .tour-header {
-  background: #240B27;
-  background: linear-gradient(198deg, rgba(36, 11, 39, 1) 5%, rgba(159, 48, 164, 1) 50%, rgba(36, 11, 39, 1) 95%);
+  background: rgba(36, 11, 39, 0.3);
+  backdrop-filter: blur(10px);
   padding: 1rem;
   border-radius: 0;
   margin-bottom: 1rem;
@@ -56,14 +67,15 @@
   width: 100%;
 }
 
+/* ✅ OPTIMIZED: Semi-transparent panels with backdrop blur */
 .panel-card {
-  background: #240B27;
-  background: linear-gradient(198deg, rgba(36, 11, 39, 1) 5%, rgba(159, 48, 164, 1) 50%, rgba(36, 11, 39, 1) 95%);
+  background: rgba(36, 11, 39, 0.6);
   border-radius: 12px;
   padding: 0.5rem 0.5rem 0.1rem 0.5rem;
   margin-left: 1rem;
   margin-right: 1rem;
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(159, 48, 164, 0.3);
 }
 
 .search-label {
@@ -517,7 +529,6 @@
 
 .map-overlay circle:hover {
   opacity: 1 !important;
- /* transform: scale(1.1); */
   filter: drop-shadow(0 0 8px rgba(159, 48, 164, 0.6));
   cursor: pointer;
 }

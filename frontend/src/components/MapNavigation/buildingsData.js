@@ -42,6 +42,12 @@ export const buildings = [
         facilities: [
           "Food Stalls",
         ]
+      },
+      {
+        name: "Second Floor",
+        facilities: [
+          "Lounge"
+        ]
       }
     ],
   },
@@ -332,6 +338,12 @@ export const buildings = [
           "Violin Room", 
           "Voice Room", 
           "Piano Room"
+        ]
+      },
+      {
+        name: "Fourth Floor",
+        facilities: [
+          "Room 401-406"
         ]
       },
       {
