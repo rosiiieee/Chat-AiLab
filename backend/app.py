@@ -2,7 +2,7 @@ import uuid
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from rag_service import run_state_graph
+from rag_service import run_state_graph, get_history
 
 app = Flask(__name__)
 CORS(app)
@@ -23,14 +23,39 @@ def chat():
     try:
         result = run_state_graph(new_user_message, user_thread_id)
         response_message = result['answer']
-        chat_history = result['history']
     except Exception as e:
         response_message = "An error occurred while processing your request."
-        chat_history = []
-        
+
     return jsonify({
         'response': response_message,
         'thread_id': user_thread_id,
-        'history': chat_history,
         'status': 'success'
+    })
+
+@app.route("/history", methods=["POST"])
+def history():
+    data = request.get_json()
+    user_thread_id = data.get('thread_id')
+
+    if not user_thread_id:
+        print("user_thread_id ERROR")
+        return jsonify({
+            "status": "error",
+            "message": "thread_id is required"
+        }), 400
+
+    try:
+        history = get_history(user_thread_id)  
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": "Could not retrieve history",
+            "details": str(e)
+        }), 500
+
+    return jsonify({
+        "status": "success",
+        "thread_id": user_thread_id,
+        "history": history
     })

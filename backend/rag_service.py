@@ -238,8 +238,14 @@ def run_state_graph(new_user_message: str, user_thread_id: int):
     state = graph.get_state(config={"configurable": {"thread_id": user_thread_id}})
     history = state.values.get("messages", [])
 
-    result["history"] = history
-
-    print(f"History: {result['history']}")
+    print(f"History FROM run_state_graph: {history}")
 
     return result
+
+def get_history(user_thread_id: int):
+    state = graph.get_state(config={"configurable": {"thread_id": user_thread_id}})
+    history = state.values.get("messages", [])
+
+    print(f"History FROM get_history: {history}")
+
+    return history

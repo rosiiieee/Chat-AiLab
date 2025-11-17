@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
 import './Chat.css';
@@ -29,10 +29,44 @@ const Chat = () => {
         sender: "bot",
       },
     ]);
+
     const [inputValue, setInputValue] = useState("");
 
     // chat animation hook
     const chatEndRef = useChatAnimation(messages);
+    console.log("UUID:", threadId);
+
+    useEffect(() => {
+      const fetchHistory = async () => {
+        try {
+          const response = await fetch("http://localhost:5000/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ thread_id: threadId }),
+          });
+
+          const data = await response.json();
+
+          if (data.status === "success" && Array.isArray(data.history)) {
+            const mappedMessages = data.history.map((msg, index) => ({
+              id: Date.now() + index, // unique id
+              text: msg.content,
+              sender: msg.role === "assistant" ? "bot" : "user",
+            }));
+
+            // append history
+            setMessages(prev => {
+              if (prev.length === 1) return [...prev, ...mappedMessages];
+              return prev; // prevent duplicates
+            });
+          }
+        } catch (error) {
+          console.error("Failed to load chat history:", error);
+        }
+    };
+
+    fetchHistory();
+  }, []);
 
     const handleSend = async (text = null) => {
       const msgText = (text ?? inputValue).trim();
@@ -64,6 +98,8 @@ const Chat = () => {
           body: JSON.stringify({ message: text, thread_id: threadId }),
         });
 
+        // setMessages(data.history);
+        
         const data = await response.json();
 
         const botMessage = {
@@ -72,9 +108,8 @@ const Chat = () => {
           sender: "bot",
         };
 
-        // setMessages(data.history);
-
         setMessages((prev) => [...prev.filter((m) => m.sender !== "typing"), botMessage]);
+
       } catch (error) {
         console.error("Error calling backend:", error);
 
