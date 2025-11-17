@@ -223,24 +223,27 @@ const Chat = () => {
                         </div>
 
                         {/* Message Input */}
-                        <div className="input-container">
-                            <input
-                                type="text"
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                onKeyDown={handleKeyPress}
-                                placeholder="Type your message here..."
-                                className="message-input"
-                            />
+                        <div className="input-wrapper">
+                            <div className="input-container">
+                                <input
+                                    type="text"
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    onKeyDown={handleKeyPress}
+                                    placeholder="Type your message here..."
+                                    className="message-input"
+                                />
 
-                            <button
-                              onClick={() => handleSend(inputValue)}
-                              className="send-button"
-                              disabled={!inputValue.trim()}
-                            >
-                              <Send size={22} strokeWidth={2} />
-                            </button>
+                                <button
+                                onClick={() => handleSend(inputValue)}
+                                className="send-button"
+                                disabled={!inputValue.trim()}
+                                >
+                                <Send size={22} strokeWidth={2} />
+                                </button>
+                            </div>
                         </div>
+                        
                     </footer>
                 </div>
             </motion.div>

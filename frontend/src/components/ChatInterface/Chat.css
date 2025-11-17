@@ -232,8 +232,8 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  width: 100%;
-  max-width: 100%;
+  width: clamp(50%, 90vw, 100%);
+  margin: 0 auto;
 }
 
 /* ====== INPUT CONTAINER - CONSISTENT ====== */
@@ -244,8 +244,19 @@
   background-color: #3A1951;
   border-radius: 9999px;
   padding: 0.5rem;
-  width: 100%;
+  width: clamp(280px, 90vw, 100%);
+}
+
+.input-container2 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #3A1951;
+  min-width: 0;
   max-width: 100%;
+  border-radius: 9999px;
+  padding: 0.5rem;
+  overflow: hidden;
 }
 
 .message-input {
@@ -253,6 +264,7 @@
   background-color: transparent;
   color: white;
   padding: 0 1rem;
+  min-width: 0;
   border: none;
   outline: none;
   font-family: 'Inter', sans-serif;
@@ -265,6 +277,22 @@
 
 /* ====== SEND BUTTON - CONSISTENT ====== */
 .send-button {
+  border: none;
+  background: #d168f0;
+  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+  flex-shrink: 0;
+}
+
+.send-button2 {
   border: none;
   background: #d168f0;
   color: white;
@@ -339,8 +367,8 @@
 .alab-bubble {
   position: absolute;
   top: -50px;
-  left: 80%;
-  transform: translateX(-40%);
+  margin: auto;
+  transform: translate(-50%,-500%);
   background: rgba(239, 174, 255, 0.9);
   color: #333;
   padding: 10px 20px;
@@ -348,7 +376,7 @@
   box-shadow: 0 4px 8px rgba(50, 50, 51, 0.63);
   font-size: 15px;
   max-width: 200px;
-  animation: fadeIn 0.6s ease-in-out;
+  animation: fadeInNoMove 0.6s ease-in-out;
   white-space: nowrap;
 }
 
@@ -356,11 +384,13 @@
   width: 380px;
   height: auto;
   display: block;
+  transform: translate(-50%,-50%);
 }
 
 .halo {
   width: 120px;
   height: 20px;
+  transform: translateY(-500%);
   background: radial-gradient(
     ellipse at center,
     rgba(255, 255, 255, 0.4) 0%,
@@ -408,6 +438,15 @@
   to {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+}
+
+@keyframes fadeInNoMove {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

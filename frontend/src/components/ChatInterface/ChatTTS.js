@@ -21,9 +21,16 @@ export default function ChatTTS() {
   const [showRobot, setShowRobot] = useState(true);
 
   // 🎙️ Start speech recognition
-  const startListening = () => {
+  const startListening = async () => {
     if (!("webkitSpeechRecognition" in window)) {
       alert("Speech Recognition not supported in this browser.");
+      return;
+    }
+
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      alert("Microphone access denied. Please allow microphone to use speech recognition.");
       return;
     }
 
@@ -152,10 +159,10 @@ export default function ChatTTS() {
                 <div className="alab-with-bubble">
                   <img src={draft_alab_hi} alt="Alab Robot" className="robot-gif" />
                   <div className="alab-bubble">
-                    Hi, I'm Alab...
+                    Hold the microphone button!
                   </div>
                 </div>
-                <div className="halo"></div>
+                {/* <div className="halo"></div> */}
               </motion.div>
             )}
           </AnimatePresence>
@@ -263,7 +270,7 @@ export default function ChatTTS() {
 
             {/* Input Wrapper - Contains input container and external mic */}
             <div className="input-wrapper">
-              <div className="input-container">
+              <div className="input-container2">
                 <input
                   type="text"
                   placeholder="Type your message here..."
@@ -273,7 +280,7 @@ export default function ChatTTS() {
                   className="message-input"
                 />
                 <button
-                  className="send-button"
+                  className="send-button2"
                   onClick={() => handleSend(inputValue)}
                   title="Send message"
                 >
@@ -283,15 +290,13 @@ export default function ChatTTS() {
 
               {/* Mic Button - Outside and Separate */}
               <button
+                onClick={() => (isListening ? stopListening() : startListening())}
                 className={`mic-button-external ${isListening ? "listening" : ""}`}
-                onMouseDown={startListening}
-                onMouseUp={stopListening}
-                onTouchStart={startListening}
-                onTouchEnd={stopListening}
-                title={isListening ? "Listening..." : "Hold to speak"}
+                title={isListening ? "Listening..." : "Tap to speak"}
               >
-                {isListening ? <MicOff size={24} /> : <Mic size={24} />}
+                {isListening ? <MicOff size={22} /> : <Mic size={22} />}
               </button>
+
             </div>
           </footer>
         </div>
