@@ -72,6 +72,8 @@ const Chat = () => {
           sender: "bot",
         };
 
+        // setMessages(data.history);
+
         setMessages((prev) => [...prev.filter((m) => m.sender !== "typing"), botMessage]);
       } catch (error) {
         console.error("Error calling backend:", error);

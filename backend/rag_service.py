@@ -234,4 +234,12 @@ def run_state_graph(new_user_message: str, user_thread_id: int):
     print(f"FROM RETRIEVE (CONTEXT): {result['context']}\n\n")
     print(f"Answer: {result['answer']}")
 
+    # Get updated state after running the graph
+    state = graph.get_state(config={"configurable": {"thread_id": user_thread_id}})
+    history = state.values.get("messages", [])
+
+    result["history"] = history
+
+    print(f"History: {result['history']}")
+
     return result
