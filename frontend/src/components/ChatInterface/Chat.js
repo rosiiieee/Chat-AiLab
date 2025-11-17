@@ -1,4 +1,4 @@
-import { useState, useId } from 'react'
+import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
 import './Chat.css';
@@ -21,8 +21,10 @@ import { Send } from "lucide-react";
  *  - handleSuggestionClick(suggestion): sends a suggested query.
  *
  **/
+
 const Chat = () => {
-    const threadId = useId();
+    const threadId = localStorage.getItem("uuid");
+
     const [messages, setMessages] = useState([
         {
             id: 1,

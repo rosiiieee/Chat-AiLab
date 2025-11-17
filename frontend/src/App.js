@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import Session from "./components/Session";
 import Chat from "./components/ChatInterface/Chat";
 import ChatTTS from "./components/ChatInterface/ChatTTS";
 import Intro from "./components/IntroAnimation/Intro";
@@ -34,6 +35,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <Router>
+      <Session />
       <AnimatedRoutes />
     </Router>
   );
