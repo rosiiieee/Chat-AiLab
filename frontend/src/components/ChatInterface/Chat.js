@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSpeech } from 'react-text-to-speech';
 import './Chat.css';
 import flamed from '../../alab_head.png';
 import useChatAnimation from './useChatAnimation'
-import React from 'react';
-import './Chat.css';
 import { Send } from "lucide-react";
 
 /**
@@ -22,57 +19,6 @@ import { Send } from "lucide-react";
  *  - handleSuggestionClick(suggestion): sends a suggested query.
  *
  **/
-// voice options
-// - Microsoft David - English (United States)
-// - Microsoft Mark - English (United States)
-// - Microsoft Zira - English (United States)
-// - Google US English
-// - Google UK English Female
-// - Google UK English Male
-const DEFAULT_VOICE = 'Google UK English Female';
-
-const SpeechButton = ({ text }) => {
-  const [voiceURI, setVoiceURI] = useState('');
-
-  useEffect(() => {
-    const loadVoices = () => {
-      const availableVoices = window.speechSynthesis.getVoices();
-      const preferred = availableVoices.find((v) => v.name === DEFAULT_VOICE);
-      if (preferred) {
-        setVoiceURI(preferred.voiceURI);
-      }
-    };
-
-    loadVoices();
-    window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
-
-    return () => {
-      window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
-    };
-  }, []);
-
-  const {
-    speechStatus,
-    start,
-    stop,
-  } = useSpeech({
-    text,
-    voiceURI: voiceURI,
-  });
-
-  const isSpeaking = speechStatus === 'started';
-
-  return (
-    <button
-      type="button"
-      className={`tts-button ${isSpeaking ? 'playing' : ''}`}
-      onClick={isSpeaking ? stop : start}
-      title={isSpeaking ? 'Stop reading' : 'Read this message'}
-    >
-      🔊
-    </button>
-  );
-};
 
 const Chat = () => {
     const threadId = localStorage.getItem("uuid");
@@ -226,12 +172,9 @@ const Chat = () => {
                                             <div className="typing-dot"></div>
                                         </div>
                                     ) : (
-                                        <>
                                         <div className={`message_bubble ${msg.sender}`}>
                                             <p className="chat-p-text">{msg.text}</p>
                                         </div>
-                                        {msg.sender === "bot" && <SpeechButton text={msg.text} />}
-                                        </>
                                     )}
                                 </motion.div>
                             ))}
