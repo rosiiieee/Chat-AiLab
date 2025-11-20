@@ -1,11 +1,9 @@
-import { useState, useId } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
 import './Chat.css';
 import flamed from '../../alab_head.png';
 import useChatAnimation from './useChatAnimation'
-import React from 'react';
-import './Chat.css';
 import { Send } from "lucide-react";
 
 /**
@@ -21,8 +19,9 @@ import { Send } from "lucide-react";
  *  - handleSuggestionClick(suggestion): sends a suggested query.
  *
  **/
+
 const Chat = () => {
-    const threadId = useId();
+    const threadId = localStorage.getItem("uuid");
     const [messages, setMessages] = useState([
         {
             id: 1,
@@ -34,6 +33,39 @@ const Chat = () => {
 
     // chat animation hook
     const chatEndRef = useChatAnimation(messages);
+    console.log("UUID:", threadId);
+
+    useEffect(() => {
+      const fetchHistory = async () => {
+        try {
+          const response = await fetch("http://localhost:5000/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ thread_id: threadId }),
+          });
+
+          const data = await response.json();
+
+          if (data.status === "success" && Array.isArray(data.history)) {
+            const mappedMessages = data.history.map((msg, index) => ({
+              id: Date.now() + index, // unique id
+              text: msg.content,
+              sender: msg.role === "assistant" ? "bot" : "user",
+            }));
+
+            // append history
+            setMessages(prev => {
+              if (prev.length === 1) return [...prev, ...mappedMessages];
+              return prev; // prevent duplicates
+            });
+          }
+        } catch (error) {
+          console.error("Failed to load chat history:", error);
+        }
+    };
+
+    fetchHistory();
+  }, []);
 
     const handleSend = async (text = null) => {
         const msgText = (text ?? inputValue).trim();

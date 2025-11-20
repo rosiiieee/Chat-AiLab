@@ -1,4 +1,4 @@
-import React, { useState, useRef, useId } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import draft_alab_hi from "../../draft_alab_hi.gif";
@@ -10,9 +10,42 @@ import { Send } from "lucide-react";
 
 export default function ChatTTS() {
   const navigate = useNavigate();
-  const threadId = useId();
+  const threadId = localStorage.getItem("uuid");
   const recognitionRef = useRef(null);
   const chatEndRef = useChatAnimation();
+  console.log("UUID:", threadId);
+
+    useEffect(() => {
+      const fetchHistory = async () => {
+        try {
+          const response = await fetch("http://localhost:5000/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ thread_id: threadId }),
+          });
+
+          const data = await response.json();
+
+          if (data.status === "success" && Array.isArray(data.history)) {
+            const mappedMessages = data.history.map((msg, index) => ({
+              id: Date.now() + index, // unique id
+              text: msg.content,
+              sender: msg.role === "assistant" ? "bot" : "user",
+            }));
+
+            // append history
+            setMessages(prev => {
+              if (prev.length === 1) return [...prev, ...mappedMessages];
+              return prev; // prevent duplicates
+            });
+          }
+        } catch (error) {
+          console.error("Failed to load chat history:", error);
+        }
+    };
+
+    fetchHistory();
+  }, []);
 
   const [messages, setMessages] = useState([]);
 

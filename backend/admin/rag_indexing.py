@@ -16,7 +16,7 @@ embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 vector_store = Chroma(
     collection_name="plm_assistant_db",
     embedding_function=embeddings,
-    persist_directory="./data/chroma_plm_db",
+    persist_directory=".admin/data/chroma_plm_db",
 )
 
 vector_store.reset_collection()  # optional reset before adding again
@@ -25,7 +25,7 @@ vector_store.reset_collection()  # optional reset before adding again
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 
 loader = DirectoryLoader(
-    path="./data",
+    path="./admin/data",
     glob="[0-9]*.txt",
     loader_cls=TextLoader,
     loader_kwargs={"encoding": "utf-8", "autodetect_encoding": True}

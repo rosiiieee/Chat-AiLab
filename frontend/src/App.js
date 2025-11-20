@@ -7,6 +7,7 @@ import Land from "./components/LandingPage/LandingPage";
 import Map from "./components/MapNavigation/Map";
 import BuildingDetails from "./components/MapNavigation/BuildingDetails";
 import Layout from "./components/Sidebar/Layout";
+import Session from "./components/Session";
 import './App.css';
 
 function AnimatedRoutes() {
@@ -34,6 +35,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <Router>
+      <Session />
       <AnimatedRoutes />
     </Router>
   );
