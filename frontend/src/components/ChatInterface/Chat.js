@@ -1,6 +1,7 @@
-import { useState, useId } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSpeech } from 'react-text-to-speech';
 import './Chat.css';
 import flamed from '../../alab_head.png';
 import useChatAnimation from './useChatAnimation'
@@ -21,8 +22,60 @@ import { Send } from "lucide-react";
  *  - handleSuggestionClick(suggestion): sends a suggested query.
  *
  **/
+// voice options
+// - Microsoft David - English (United States)
+// - Microsoft Mark - English (United States)
+// - Microsoft Zira - English (United States)
+// - Google US English
+// - Google UK English Female
+// - Google UK English Male
+const DEFAULT_VOICE = 'Google UK English Female';
+
+const SpeechButton = ({ text }) => {
+  const [voiceURI, setVoiceURI] = useState('');
+
+  useEffect(() => {
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      const preferred = availableVoices.find((v) => v.name === DEFAULT_VOICE);
+      if (preferred) {
+        setVoiceURI(preferred.voiceURI);
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+
+    return () => {
+      window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+    };
+  }, []);
+
+  const {
+    speechStatus,
+    start,
+    stop,
+  } = useSpeech({
+    text,
+    voiceURI: voiceURI,
+  });
+
+  const isSpeaking = speechStatus === 'started';
+
+  return (
+    <button
+      type="button"
+      className={`tts-button ${isSpeaking ? 'playing' : ''}`}
+      onClick={isSpeaking ? stop : start}
+      title={isSpeaking ? 'Stop reading' : 'Read this message'}
+    >
+      🔊
+    </button>
+  );
+};
+
 const Chat = () => {
-    const threadId = useId();
+    const threadId = localStorage.getItem("uuid");
     const [messages, setMessages] = useState([
         {
             id: 1,
@@ -34,6 +87,39 @@ const Chat = () => {
 
     // chat animation hook
     const chatEndRef = useChatAnimation(messages);
+    console.log("UUID:", threadId);
+
+    useEffect(() => {
+      const fetchHistory = async () => {
+        try {
+          const response = await fetch("http://localhost:5000/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ thread_id: threadId }),
+          });
+
+          const data = await response.json();
+
+          if (data.status === "success" && Array.isArray(data.history)) {
+            const mappedMessages = data.history.map((msg, index) => ({
+              id: Date.now() + index, // unique id
+              text: msg.content,
+              sender: msg.role === "assistant" ? "bot" : "user",
+            }));
+
+            // append history
+            setMessages(prev => {
+              if (prev.length === 1) return [...prev, ...mappedMessages];
+              return prev; // prevent duplicates
+            });
+          }
+        } catch (error) {
+          console.error("Failed to load chat history:", error);
+        }
+    };
+
+    fetchHistory();
+  }, []);
 
     const handleSend = async (text = null) => {
         const msgText = (text ?? inputValue).trim();
@@ -140,9 +226,12 @@ const Chat = () => {
                                             <div className="typing-dot"></div>
                                         </div>
                                     ) : (
+                                        <>
                                         <div className={`message_bubble ${msg.sender}`}>
                                             <p className="chat-p-text">{msg.text}</p>
                                         </div>
+                                        {msg.sender === "bot" && <SpeechButton text={msg.text} />}
+                                        </>
                                     )}
                                 </motion.div>
                             ))}
