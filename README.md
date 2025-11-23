@@ -13,14 +13,17 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Backend
 
-Use Python 3.12.7 -- tested and working
-
 ### Creating venv & Installing Dependencies 
 ```
 cd backend
 
+Linux venv installation:
 python3 -m venv .venv
-. .venv/bin/activate                        (linux only)
+source venv/bin/activate
+
+Windows venv installation:
+python -m venv venv
+venv\Scripts\activate
 
 > Minimal requirements (If leads to error try Full requirements):
 pip install -r requirements.txt
@@ -28,8 +31,9 @@ pip install -r requirements.txt
 > Full requirements:          
 pip install -r requirements-full.txt
 
-> Through Commands (!!!MUST input version from requirements text file for compatibility):
+> Through Commands (if the requirements.txt files don't work)
 
+pip install gunicorn
 pip install Flask
 pip install flask-cors
 pip install python-dotenv
@@ -50,12 +54,23 @@ OPENAI_API_KEY=...
 
 ### Making Embeddings Vector Store (Chroma DB) 
 ```
-cd backend/admin
-python3 admin/rag_indexing.py     (linux)
+(windows)
+cd backend\admin
+python rag_indexing.py
+
+(linux)
+python3 admin/rag_indexing.py
 ```
 
-### Running Flask (localhost:5000 default)
+### Running the App (both frontend and backend):
 ```
+cd backend
+gunicorn app:app
+```
+
+### Running for development (backend only)
+```
+cd backend
 flask --app app run
 flask --app app run --debug                 (hot reload)
 ```
