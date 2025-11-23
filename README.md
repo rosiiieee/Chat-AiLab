@@ -13,6 +13,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Backend
 
+Use Python 3.12.7 -- tested and working
+
 ### Creating venv & Installing Dependencies 
 ```
 cd backend
@@ -33,6 +35,7 @@ pip install flask-cors
 pip install python-dotenv
 pip install langchain                       (core)
 pip install langchain-google-genai          (embedding model & generation)
+pip install langchain-openai                (embedding model & generation)
 pip install langchain-community             (vector store)
 pip install langchain-chroma                (vector store)
 ```
@@ -41,13 +44,14 @@ pip install langchain-chroma                (vector store)
 ```
 LANGSMITH_TRACING=...       (optional)
 LANGSMITH_API_KEY=...       (optional)
-GOOGLE_API_KEY=...
+GOOGLE_API_KEY=...          (depreciated)
+OPENAI_API_KEY=...
 ```
 
 ### Making Embeddings Vector Store (Chroma DB) 
 ```
 cd backend/admin
-python3 rag_indexing.py     (linux)
+python3 admin/rag_indexing.py     (linux)
 ```
 
 ### Running Flask (localhost:5000 default)
