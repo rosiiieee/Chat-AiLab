@@ -18,7 +18,7 @@ export default function ChatTTS() {
     useEffect(() => {
       const fetchHistory = async () => {
         try {
-          const response = await fetch("http://localhost:5000/history", {
+          const response = await fetch("/api/history", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ thread_id: threadId }),
@@ -111,7 +111,7 @@ export default function ChatTTS() {
     setInputValue("");
 
     try {
-      const response = await fetch("http://localhost:5000/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: msgText, thread_id: threadId }),

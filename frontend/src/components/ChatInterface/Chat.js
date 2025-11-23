@@ -38,7 +38,7 @@ const Chat = () => {
     useEffect(() => {
       const fetchHistory = async () => {
         try {
-          const response = await fetch("http://localhost:5000/history", {
+          const response = await fetch("/api/history", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ thread_id: threadId }),
@@ -85,7 +85,7 @@ const Chat = () => {
         setInputValue("");
 
         try {
-            const response = await fetch("http://localhost:5000/chat", {
+            const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

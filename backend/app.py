@@ -1,37 +1,51 @@
+import os
 import uuid
 import time
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
 from rag_service import run_state_graph, purge_stale_threads, get_history
 
-app = Flask(__name__)
+# Path to your React build folder (relative to this file)
+REACT_BUILD_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend", "build")
+
+app = Flask(
+    __name__,
+    static_folder=REACT_BUILD_DIR,  # React static files
+    static_url_path="/"             # served at root
+)
+
+# If you're serving frontend + backend from SAME origin in prod,
+# you technically don't need CORS, but keeping it doesn't hurt much.
 CORS(app)
+
 THREAD_TIME_TO_LIVE = 86400  # in seconds
 threads_last_update = {}
-@app.route("/")
-def hello_world():
-    return "<p>Hellow, World!</p>"
 
-@app.route("/chat", methods=["POST"])
+
+# ============ API ROUTES ============
+
+@app.route("/api/chat", methods=["POST"])
 def chat():
-    data = request.get_json()
-    new_user_message = data.get('message', '')
+    data = request.get_json() or {}
+    new_user_message = data.get("message", "")
 
-    # generated random thread_id for stateless conversation
-    user_thread_id = data.get('thread_id')
-     # keep track of known thread_ids w/ their last_updated time, jus using py time obj
+    # generate random thread_id if not provided
+    user_thread_id = data.get("thread_id")
+    if not user_thread_id:
+        user_thread_id = str(uuid.uuid4())
+
+    # keep track of known thread_ids w/ their last_updated time
     time_now = time.time()
     threads_last_update[user_thread_id] = time_now
-    # clean up old threads:
-    # wouldn't scale well if there are like over 1k threads this works for now :KEKW: for scaling use a database for faster querying
-    # not sure how this'd interact w/ multiple flask instances thru gunicorn either soooooo yea just use a database for that
+
+    # clean up old threads
     threads_to_purge = []
     for thread_id, last_update in list(threads_last_update.items()):
         if time_now - last_update > THREAD_TIME_TO_LIVE:
             threads_to_purge.append(thread_id)
             del threads_last_update[thread_id]
-    # PURGE
+
     if threads_to_purge:
         print("(debug) purging ids: ", threads_to_purge)
         try:
@@ -42,19 +56,22 @@ def chat():
     # Use RAG service to generate response
     try:
         result = run_state_graph(new_user_message, user_thread_id)
-        response_message = result['answer']
+        response_message = result["answer"]
     except Exception as e:
+        print("Error in run_state_graph:", e)
         response_message = "An error occurred while processing your request."
+
     return jsonify({
-        'response': response_message,
-        'thread_id': user_thread_id,
-        'status': 'success'
+        "response": response_message,
+        "thread_id": user_thread_id,
+        "status": "success"
     })
 
-@app.route("/history", methods=["POST"])
+
+@app.route("/api/history", methods=["POST"])
 def history():
-    data = request.get_json()
-    user_thread_id = data.get('thread_id')
+    data = request.get_json() or {}
+    user_thread_id = data.get("thread_id")
 
     if not user_thread_id:
         print("user_thread_id ERROR")
@@ -64,9 +81,9 @@ def history():
         }), 400
 
     try:
-        history = get_history(user_thread_id)  
-        
+        history = get_history(user_thread_id)
     except Exception as e:
+        print("Error in get_history:", e)
         return jsonify({
             "status": "error",
             "message": "Could not retrieve history",
@@ -78,3 +95,24 @@ def history():
         "thread_id": user_thread_id,
         "history": history
     })
+
+
+# ============ REACT FRONTEND ROUTES ============
+
+# Serve static files and SPA fallback
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_react(path):
+    """
+    If the file exists in the React build, serve it.
+    Otherwise, serve index.html so React Router can handle the route.
+    """
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    # default: index.html
+    return send_from_directory(app.static_folder, "index.html")
+
+
+if __name__ == "__main__":
+    # debug only; in production Render will use gunicorn
+    app.run(debug=True)
