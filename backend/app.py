@@ -27,45 +27,8 @@ threads_last_update = {}
 
 @app.route("/api/chat", methods=["POST"])
 def chat():
-    data = request.get_json() or {}
-    new_user_message = data.get("message", "")
+    return {"response": "Hello from backend!"}
 
-    # generate random thread_id if not provided
-    user_thread_id = data.get("thread_id")
-    if not user_thread_id:
-        user_thread_id = str(uuid.uuid4())
-
-    # keep track of known thread_ids w/ their last_updated time
-    time_now = time.time()
-    threads_last_update[user_thread_id] = time_now
-
-    # clean up old threads
-    threads_to_purge = []
-    for thread_id, last_update in list(threads_last_update.items()):
-        if time_now - last_update > THREAD_TIME_TO_LIVE:
-            threads_to_purge.append(thread_id)
-            del threads_last_update[thread_id]
-
-    if threads_to_purge:
-        print("(debug) purging ids: ", threads_to_purge)
-        try:
-            purge_stale_threads(threads_to_purge)
-        except Exception as e:
-            print(f"Error purging threads: {e}")
-
-    # Use RAG service to generate response
-    try:
-        result = run_state_graph(new_user_message, user_thread_id)
-        response_message = result["answer"]
-    except Exception as e:
-        print("Error in run_state_graph:", e)
-        response_message = "An error occurred while processing your request."
-
-    return jsonify({
-        "response": response_message,
-        "thread_id": user_thread_id,
-        "status": "success"
-    })
 
 
 @app.route("/api/history", methods=["POST"])
