@@ -62,7 +62,8 @@ python rag_indexing.py
 python3 admin/rag_indexing.py
 ```
 
-### Running the App (both frontend and backend):
+### Running the App (both frontend and backend) - LINUX ONLY:
+>gunicorn is made for UNIX-Operating Systems, so not windows.
 ```
 cd backend
 gunicorn app:app
