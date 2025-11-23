@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/static/css/main.32fc725b.css",
+    "main.js": "/static/js/main.bf09e2d7.js",
+    "static/js/453.323aef0f.chunk.js": "/static/js/453.323aef0f.chunk.js",
+    "static/media/flamehead.gif": "/static/media/flamehead.256d0515e1c0e5bd8e0c.gif",
+    "static/media/draft_alab_hi.gif": "/static/media/draft_alab_hi.6f54a381ccf19d81f16e.gif",
+    "static/media/draft_alab.gif": "/static/media/draft_alab.6d2f6084622a259761b7.gif",
+    "static/media/GCA.png": "/static/media/GCA.866b6de9dae6498ed241.png",
+    "static/media/plm chapel.png": "/static/media/plm chapel.2e86b25c990633537253.png",
+    "static/media/PLM.png": "/static/media/PLM.118bd84ad3e2169fba8d.png",
+    "static/media/plm canteen.png": "/static/media/plm canteen.2ab91682d0221b909835.png",
+    "static/media/plm gym.png": "/static/media/plm gym.543faedc5fea99e05619.png",
+    "static/media/plm tb.png": "/static/media/plm tb.49bf060de54c43d7644f.png",
+    "static/media/plm jaa.png": "/static/media/plm jaa.2d9b7511bbb78907d9fc.png",
+    "static/media/plm gee.png": "/static/media/plm gee.027f3c0e161ceb08bd70.png",
+    "static/media/plm pride hall.png": "/static/media/plm pride hall.bdab302406b119b3ef06.png",
+    "static/media/plm ga.png": "/static/media/plm ga.58de88e18d167515d7d9.png",
+    "static/media/map.png": "/static/media/map.3b5bd0388f7a66b7b0a1.png",
+    "static/media/GB.png": "/static/media/GB.b6fb956ff6a5c6ffaae4.png",
+    "static/media/GL.png": "/static/media/GL.03ef75ab58b59c5ce8e4.png",
+    "static/media/GK.png": "/static/media/GK.15ea415fcf8285785890.png",
+    "static/media/alab_head.png": "/static/media/alab_head.fd65a5c4401ccf322361.png",
+    "static/media/fountain.png": "/static/media/fountain.04352b7d2c9efd310131.png",
+    "static/media/GV.png": "/static/media/GV.7fb45053f6af93634b39.png",
+    "static/media/glow.png": "/static/media/glow.403c48e70b0d21732d19.png",
+    "static/media/UAC.png": "/static/media/UAC.5a3ca0d08acb4a3a6e09.png",
+    "static/media/ph_flag.png": "/static/media/ph_flag.42dfbd145a1523277a3c.png",
+    "static/media/mural.png": "/static/media/mural.8c619514885a22423083.png",
+    "static/media/gazebo.png": "/static/media/gazebo.9d53f99c8ca1b9513e39.png",
+    "static/media/SSC.png": "/static/media/SSC.13ea20b543e6d242845b.png",
+    "static/media/monument.png": "/static/media/monument.b64ba9d8c888732d9e30.png",
+    "static/media/chapel.png": "/static/media/chapel.f9e25b05fa9fab8a947c.png",
+    "index.html": "/index.html",
+    "main.32fc725b.css.map": "/static/css/main.32fc725b.css.map",
+    "main.bf09e2d7.js.map": "/static/js/main.bf09e2d7.js.map",
+    "453.323aef0f.chunk.js.map": "/static/js/453.323aef0f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.32fc725b.css",
+    "static/js/main.bf09e2d7.js"
+  ]
+}
