@@ -16,7 +16,7 @@ embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 vector_store = Chroma(
     collection_name="plm_assistant_db",
     embedding_function=embeddings,
-    persist_directory=".admin/data/chroma_plm_db",
+    persist_directory="./admin/data/chroma_plm_db",
 )
 
 vector_store.reset_collection()  # optional reset before adding again
