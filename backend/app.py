@@ -11,8 +11,8 @@ REACT_BUILD_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend", "bui
 
 app = Flask(
     __name__,
-    static_folder=REACT_BUILD_DIR,  # React static files
-    static_url_path="/"             # served at root
+    static_folder=None,  # React static files
+    static_url_path=None             # served at root
 )
 
 # If you're serving frontend + backend from SAME origin in prod,
@@ -99,20 +99,22 @@ def history():
 
 # ============ REACT FRONTEND ROUTES ============
 
-# Serve static files and SPA fallback
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def serve_react(path):
     """
-    If the file exists in the React build, serve it.
-    Otherwise, serve index.html so React Router can handle the route.
+    Serve React app - handle both static files and SPA routing.
     """
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    # default: index.html
-    return send_from_directory(app.static_folder, "index.html")
-
+    # Try to serve as a static file first
+    file_path = os.path.join(REACT_BUILD_DIR, path)
+    if path and os.path.isfile(file_path):
+        return send_from_directory(REACT_BUILD_DIR, path)
+    
+    # Otherwise serve index.html for SPA routing
+    return send_from_directory(REACT_BUILD_DIR, "index.html")
 
 if __name__ == "__main__":
     # debug only; in production Render will use gunicorn
     app.run(debug=True)
+
+
