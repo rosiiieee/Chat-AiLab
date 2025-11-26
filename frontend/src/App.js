@@ -18,10 +18,10 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Intro />} />
         <Route path="/intro" element={<Intro />} />
+        <Route path="/landing" element={<Land />} />
         
 
         <Route element={<Layout />}>
-          <Route path="/landing" element={<Land />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/chat-tts" element={<ChatTTS />} />
           <Route path="/map" element={<Map />} />
@@ -40,26 +40,3 @@ export default function App() {
     </Router>
   );
 }
-
-/* function App() {
-  return (
-    <BrowserRouter>
-      <nav>
-        <Link to="/">Intro</Link>
-        <Link to="/chat">Chat</Link>
-        <Link to="/landing">Landing Page</Link>
-      </nav>
-
-      <Routes>
-        <Route path="/" element={<Intro />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/landing" element={<Land/>} />
-      </Routes>
-      
-    </BrowserRouter>
-  );
-}
-
-export default App; */
-
-/* if ur reading this no u didnt */
