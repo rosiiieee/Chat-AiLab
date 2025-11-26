@@ -12,6 +12,14 @@ export default function ChatTTS() {
     const threadId = localStorage.getItem("uuid");
     const recognitionRef = useRef(null);
     const chatEndRef = useChatAnimation();
+    const FAQ_prompt = `
+    Frequently Asked Questions:\n
+    1. What are the requirements to maintain my scholarship?\n
+    2. When would I get dismissed or disqualified from my program? \n
+    3. How do I apply for a Leave of Absence (LOA)?\n
+    4. What are the rules for uniforms, dress code, and IDs?”\n
+    5. What offenses will get me suspended or expelled?\n
+    `
 
     const [isSpeechSupported, setIsSpeechSupported] = useState(false);
     const [historyLoaded, setHistoryLoaded] = useState(false); 
@@ -313,7 +321,7 @@ export default function ChatTTS() {
                                 Uniform
                             </button>
                             <button
-                                onClick={() => handleSuggestionClick("FAQs")}
+                                onClick={() => handleSuggestionClick(FAQ_prompt)}
                                 className="suggestion-button"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="icon-sm" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

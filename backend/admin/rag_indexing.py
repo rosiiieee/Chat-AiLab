@@ -1,7 +1,7 @@
 """ 
 This file is for Vectore Store Indexing Only
 """
-
+import os
 from dotenv import load_dotenv
 load_dotenv()
 

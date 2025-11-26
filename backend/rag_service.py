@@ -175,6 +175,7 @@ def generate(state: State):
         8. Focus on the latest user input, but use previous ones as context if needed.
 
         Information:
+        You are Chat-AiLab or AiLab, a chatbot who provides assitance to PLM students regarding the PLM Student Manual.
         {context}
 
         User input:

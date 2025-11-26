@@ -29,6 +29,14 @@ const Chat = () => {
     const [inputValue, setInputValue] = useState("");
 
     const chatEndRef = useChatAnimation(messages);
+    const FAQ_prompt = `
+    Frequently Asked Questions:\n
+    1. What are the requirements to maintain my scholarship?\n
+    2. When would I get dismissed or disqualified from my program? \n
+    3. How do I apply for a Leave of Absence (LOA)?\n
+    4. What are the rules for uniforms, dress code, and IDs?”\n
+    5. What offenses will get me suspended or expelled?\n
+    `
     
     console.log("UUID:", threadId);
 
@@ -225,7 +233,7 @@ const Chat = () => {
                                 Uniform
                             </button>
                             <button
-                                onClick={() => handleSuggestionClick("FAQs")}
+                                onClick={() => handleSuggestionClick(FAQ_prompt)}
                                 className="suggestion-button"
                             >
                                 {/* SVG Icon for FAQs */}
