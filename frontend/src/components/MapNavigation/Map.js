@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Search, Send } from "lucide-react";
+import { MapPin, Search, Send, ChevronDown } from "lucide-react";
+import { createPortal } from "react-dom";
 import plmmap from "./map.png";
 import customMonument from "./monument.png"; 
 import "./Map.css";
 import gazeboIcon from "./gazebo.png"; 
 import phFlagIcon from "./ph_flag.png"; 
 import fountainIcon from "./fountain.png"; 
-import chapelIcon from "./chapel.png"; 
 import muralIcon from "./mural.png"; 
 import { buildings } from "./buildingsData";
 
@@ -19,7 +19,13 @@ export default function Map() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [searchFrom, setSearchFrom] = useState("");
   const [searchTo, setSearchTo] = useState("");
+  const [showFromDropdown, setShowFromDropdown] = useState(false);
+  const [showToDropdown, setShowToDropdown] = useState(false);
+  const [fromDropdownPosition, setFromDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+  const [toDropdownPosition, setToDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
   const imgRef = useRef(null);
+  const fromDropdownRef = useRef(null);
+  const toDropdownRef = useRef(null);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -55,6 +61,52 @@ export default function Map() {
       }
     };
   }, []);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (fromDropdownRef.current && !fromDropdownRef.current.contains(event.target)) {
+        // Check if click is inside the portal dropdown
+        const dropdownElement = document.querySelector('[data-dropdown="from"]');
+        if (!dropdownElement || !dropdownElement.contains(event.target)) {
+          setShowFromDropdown(false);
+        }
+      }
+      if (toDropdownRef.current && !toDropdownRef.current.contains(event.target)) {
+        // Check if click is inside the portal dropdown
+        const dropdownElement = document.querySelector('[data-dropdown="to"]');
+        if (!dropdownElement || !dropdownElement.contains(event.target)) {
+          setShowToDropdown(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Update dropdown positions when they open
+  useEffect(() => {
+    if (showFromDropdown && fromDropdownRef.current) {
+      const rect = fromDropdownRef.current.getBoundingClientRect();
+      setFromDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      });
+    }
+  }, [showFromDropdown]);
+
+  useEffect(() => {
+    if (showToDropdown && toDropdownRef.current) {
+      const rect = toDropdownRef.current.getBoundingClientRect();
+      setToDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      });
+    }
+  }, [showToDropdown]);
 
   const nodes = [
     { id: "Facade", x: 0.17, y: 0.80, type: "hotspot" },
@@ -153,7 +205,6 @@ export default function Map() {
       label: "Monument" 
     },
     { component: <img src={fountainIcon} alt="Fountain Icon" className="legend-icon" />, label: "Fountain" },
-    { component: <img src={chapelIcon} alt="Chapel Icon" className="legend-icon" />, label: "Chapel" },
     { component: <img src={muralIcon} alt="Mural Icon" className="legend-icon" />, label: "Mural" }, 
   ];
 
@@ -237,47 +288,149 @@ export default function Map() {
       <div className="tour-layout">
         <div className="left-panel">
           <div className="panel-card">
-            <div className="input-group">
+            <div className="input-group" style={{ position: 'relative', zIndex: 1001 }}>
               <label className="search-label">WHERE YOU AT?</label>
-              <div className="search-wrapper">
-                <div style={{ position: 'relative', flex: 1 }}>
+              <div className="search-wrapper" style={{ position: 'relative', zIndex: 1002 }}>
+                <div style={{ position: 'relative', flex: 1 }} ref={fromDropdownRef}>
                   <MapPin size={16} color="#999" style={{ position: 'absolute', left: '0.6rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', zIndex: 1 }} />
                   <input
                     type="text"
                     value={searchFrom}
                     onChange={(e) => setSearchFrom(e.target.value)}
+                    onFocus={() => setShowFromDropdown(true)}
                     placeholder="current location"
-                    list="from-locations"
                     className="search-input search-input-with-icon"
+                    style={{ paddingRight: '2rem' }}
                   />
+                  <ChevronDown 
+                    size={16} 
+                    color="#999" 
+                    style={{ 
+                      position: 'absolute', 
+                      right: '0.6rem', 
+                      top: '50%', 
+                      transform: 'translateY(-50%)', 
+                      cursor: 'pointer',
+                      zIndex: 1 
+                    }}
+                    onClick={() => setShowFromDropdown(!showFromDropdown)}
+                  />
+                  {showFromDropdown && createPortal(
+                    <div 
+                      data-dropdown="from"
+                      style={{
+                      position: 'fixed',
+                      top: `${fromDropdownPosition.top}px`,
+                      left: `${fromDropdownPosition.left}px`,
+                      width: `${fromDropdownPosition.width}px`,
+                      backgroundColor: 'white',
+                      border: '1px solid #ddd',
+                      borderRadius: '4px',
+                      maxHeight: '200px',
+                      overflowY: 'auto',
+                      zIndex: 99999,
+                      marginTop: '4px',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                    }}>
+                      {namedNodes.map(n => (
+                        <div
+                          key={n.id}
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setSearchFrom(n.id);
+                            setShowFromDropdown(false);
+                          }}
+                          style={{
+                            padding: '8px 12px',
+                            cursor: 'pointer',
+                            backgroundColor: searchFrom === n.id ? '#f0f0f0' : 'white'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = searchFrom === n.id ? '#f0f0f0' : 'white'}
+                        >
+                          {n.id}
+                        </div>
+                      ))}
+                    </div>,
+                    document.body
+                  )}
                 </div>
               </div>
-              <datalist id="from-locations">
-                {namedNodes.map(n => <option key={n.id} value={n.id} />)}
-              </datalist>
             </div>
 
-            <div className="input-group">
+            <div className="input-group" style={{ position: 'relative', zIndex: 1001 }}>
               <label className="search-label">WHERE TO?</label>
-              <div className="search-wrapper">
-                <div style={{ position: 'relative', flex: 1 }}>
+              <div className="search-wrapper" style={{ position: 'relative', zIndex: 1002 }}>
+                <div style={{ position: 'relative', flex: 1 }} ref={toDropdownRef}>
                   <Send size={16} color="#999" style={{ position: 'absolute', left: '0.6rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', zIndex: 1 }} />
                   <input
                     type="text"
                     value={searchTo}
                     onChange={(e) => setSearchTo(e.target.value)}
+                    onFocus={() => setShowToDropdown(true)}
                     placeholder="where to"
-                    list="to-locations"
                     className="search-input-with-button search-input-with-icon"
+                    style={{ paddingRight: '2rem' }}
                   />
+                  <ChevronDown 
+                    size={16} 
+                    color="#999" 
+                    style={{ 
+                      position: 'absolute', 
+                      right: '0.6rem', 
+                      top: '50%', 
+                      transform: 'translateY(-50%)', 
+                      cursor: 'pointer',
+                      zIndex: 1 
+                    }}
+                    onClick={() => setShowToDropdown(!showToDropdown)}
+                  />
+                  {showToDropdown && createPortal(
+                    <div 
+                      data-dropdown="to"
+                      style={{
+                      position: 'fixed',
+                      top: `${toDropdownPosition.top}px`,
+                      left: `${toDropdownPosition.left}px`,
+                      width: `${toDropdownPosition.width}px`,
+                      backgroundColor: 'white',
+                      border: '1px solid #ddd',
+                      borderRadius: '4px',
+                      maxHeight: '200px',
+                      overflowY: 'auto',
+                      zIndex: 99999,
+                      marginTop: '4px',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                    }}>
+                      {namedNodes.map(n => (
+                        <div
+                          key={n.id}
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setSearchTo(n.id);
+                            setShowToDropdown(false);
+                          }}
+                          style={{
+                            padding: '8px 12px',
+                            cursor: 'pointer',
+                            backgroundColor: searchTo === n.id ? '#f0f0f0' : 'white'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = searchTo === n.id ? '#f0f0f0' : 'white'}
+                        >
+                          {n.id}
+                        </div>
+                      ))}
+                    </div>,
+                    document.body
+                  )}
                 </div>
                 <button onClick={handleSearch} className="search-button">
                   <Search size={18} color="white" />
                 </button>
               </div>
-              <datalist id="to-locations">
-                {namedNodes.map(n => <option key={n.id} value={n.id} />)}
-              </datalist>
             </div>
           </div>
 
@@ -330,7 +483,6 @@ export default function Map() {
                     );
                   })}
                 
-                {/* Building markers - NOW FULLY TRANSPARENT BUT CLICKABLE */}
                 {buildings.map((building) => (
                   <g key={building.id}>
                     <circle

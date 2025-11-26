@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-/* ====== CONSISTENT LAYOUT FOR BOTH PAGES ====== */
 .backgroundch, 
 .chatting-container {
   height: 100vh;
@@ -32,11 +31,11 @@
   overflow: hidden;
 }
 
-/* ====== HEADER - CONSISTENT ====== */
+/* ====== HEADER ====== */
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 1rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4px);
@@ -45,6 +44,7 @@
   z-index: 10;
   min-height: 60px;
   flex-shrink: 0;
+  position: relative;
 }
 
 .header-button {
@@ -66,6 +66,8 @@
   background: none;
   border: none;
   cursor: pointer;
+  margin-left: auto;
+  z-index: 1;
 }
 
 .logo-button:hover {
@@ -76,7 +78,11 @@
   font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
-  margin: auto;
+  margin: 0;
+  position: absolute;
+  left: 40%;
+  transform: translateX(-50%)
+
 }
 
 /* ====== CHAT AREA - CONSISTENT ====== */
@@ -104,7 +110,7 @@
   border-radius: 3px;
 }
 
-/* ====== MESSAGE BUBBLES - CONSISTENT ====== */
+/* ====== MESSAGE BUBBLES ====== */
 .message-container {
   display: flex;
   width: 100%;
@@ -184,7 +190,7 @@
   animation-delay: 0.45s;
 }
 
-/* ====== FOOTER - CONSISTENT HEIGHT ====== */
+/* ====== FOOTER ====== */
 .footer {
   padding: 1rem;
   background: linear-gradient(270deg, #341038 0%, #240b27 50%);
@@ -197,7 +203,7 @@
   min-height: 120px;
 }
 
-/* ====== SUGGESTIONS - CONSISTENT ====== */
+/* ====== SUGGESTIONS ====== */
 .suggestions-container {
   display: flex;
   align-items: center;
@@ -227,7 +233,7 @@
   background-color: #4F2274;
 }
 
-/* ====== INPUT WRAPPER (CHAT TTS) - Maintains consistent footer height ====== */
+/* ====== INPUT WRAPPER (CHAT TTS) ====== */
 .input-wrapper {
   display: flex;
   align-items: center;
@@ -236,7 +242,7 @@
   margin: 0 auto;
 }
 
-/* ====== INPUT CONTAINER - CONSISTENT ====== */
+/* ====== INPUT CONTAINER ====== */
 .input-container {
   flex: 1;
   display: flex;
@@ -275,7 +281,7 @@
   color: #9CA3AF;
 }
 
-/* ====== SEND BUTTON - CONSISTENT ====== */
+/* ====== SEND BUTTON ====== */
 .send-button {
   border: none;
   background: #d168f0;
@@ -344,7 +350,7 @@
   background: #e879f9;
 }
 
-/* ====== ALAB TTS ROBOT SECTION - CENTERED ====== */
+/* ====== ALAB TTS ROBOT SECTION ====== */
 .alab-container {
   position: fixed;
   top: 50%;
@@ -400,7 +406,6 @@
   margin-top: -10px;
 }
 
-/* ====== ICONS - CONSISTENT ====== */
 .icon {
   height: 2rem;
   width: 2rem;
@@ -560,4 +565,23 @@
   .chat-area {
     padding: 1.5rem 2rem;
   }
+}
+
+.chat-p-text {
+  text-align: left;
+  line-height: 1.45;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+.bot-response-text {
+  white-space: pre-wrap;
+  line-height: 1.55;
+  text-align: left;
+  color: #000;
+  font-size: 0.95rem;
+  font-weight: 450;
+  margin: 0;
+  padding: 0;
 }
