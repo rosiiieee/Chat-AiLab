@@ -12,12 +12,13 @@ export default function ChatTTS() {
     const threadId = localStorage.getItem("uuid");
     const recognitionRef = useRef(null);
     const chatEndRef = useChatAnimation();
+    const isInitializedRef = useRef(false);
     const FAQ_prompt = `
     Frequently Asked Questions:\n
     1. What are the requirements to maintain my scholarship?\n
     2. When would I get dismissed or disqualified from my program? \n
     3. How do I apply for a Leave of Absence (LOA)?\n
-    4. What are the rules for uniforms, dress code, and IDs?”\n
+    4. What are the rules for uniforms, dress code, and IDs?"\n
     5. What offenses will get me suspended or expelled?\n
     `
 
@@ -26,19 +27,43 @@ export default function ChatTTS() {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [isListening, setIsListening] = useState(false);
-    const [showRobot, setShowRobot] = useState(true); 
+    const [showRobot, setShowRobot] = useState(true);
+
+    // Detect if user is on iOS
+    const isIOS = () => {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+               (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    };
+
+    // Detect if user is on mobile
+    const isMobile = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
 
     useEffect(() => {
-        const supported = 'webkitSpeechRecognition' in window;
+        // Check for speech recognition support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const supported = !!SpeechRecognition;
         setIsSpeechSupported(supported);
         
         if (!supported) {
             console.warn('Speech recognition not supported in this browser');
+        } else {
+            console.log('Speech recognition is supported');
+        }
+
+        // Check if HTTPS (required for mobile)
+        if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+            console.warn('HTTPS is required for microphone access on mobile devices');
         }
 
         return () => {
             if (recognitionRef.current) {
-                recognitionRef.current.stop();
+                try {
+                    recognitionRef.current.abort();
+                } catch (e) {
+                    console.log('Error aborting recognition:', e);
+                }
             }
             window.speechSynthesis.cancel();
         };
@@ -93,60 +118,183 @@ export default function ChatTTS() {
         window.speechSynthesis.speak(speech);
     };
 
-    const startListening = async () => {
-        if (!isSpeechSupported) {
-            alert("Speech Recognition not supported in this browser. Please use Chrome or Edge.");
-            return;
-        }
+    const initializeRecognition = () => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return null;
 
-        try {
-            // Request microphone access
-            await navigator.mediaDevices.getUserMedia({ audio: true });
-        } catch (err) {
-            alert("Microphone access denied. Please allow microphone to use speech recognition.");
-            return;
-        }
-
-        // Initialize recognition
-        const recognition = new window.webkitSpeechRecognition();
-        recognition.lang = "en-US";
-        recognition.continuous = false;
+        const recognition = new SpeechRecognition();
+        
+        // Critical settings for mobile
+        recognition.continuous = false; // IMPORTANT: false works better on mobile
         recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.lang = "en-US";
 
         recognition.onstart = () => {
-            setIsListening(true);
             console.log('Speech recognition started');
+            setIsListening(true);
         };
         
         recognition.onend = () => {
-            setIsListening(false);
             console.log('Speech recognition ended');
+            setIsListening(false);
+            isInitializedRef.current = false;
         };
         
         recognition.onerror = (event) => {
             console.error('Speech recognition error:', event.error);
             setIsListening(false);
+            isInitializedRef.current = false;
+            
+            let errorMessage = '';
+            switch(event.error) {
+                case 'no-speech':
+                    errorMessage = 'No speech detected. Please try speaking again.';
+                    break;
+                case 'audio-capture':
+                    errorMessage = 'Microphone not accessible. Please check your device settings.';
+                    break;
+                case 'not-allowed':
+                    if (isIOS()) {
+                        errorMessage = 'Microphone access denied. On iOS, you may need to enable "Dictation" in Settings > General > Keyboards > Enable Dictation.';
+                    } else {
+                        errorMessage = 'Microphone permission denied. Please allow microphone access in your browser settings.';
+                    }
+                    break;
+                case 'network':
+                    errorMessage = 'Network error. Speech recognition requires an internet connection.';
+                    break;
+                case 'service-not-allowed':
+                    if (isIOS()) {
+                        errorMessage = 'Speech recognition not enabled. Go to Settings > General > Keyboards and enable "Dictation".';
+                    } else {
+                        errorMessage = 'Speech recognition service not available.';
+                    }
+                    break;
+                case 'aborted':
+                    // User stopped manually, no alert needed
+                    return;
+                default:
+                    errorMessage = `Error: ${event.error}. Please try again.`;
+            }
+            
+            if (errorMessage) {
+                alert(errorMessage);
+            }
         };
 
         recognition.onresult = (event) => {
+            console.log('Speech result received');
             const transcript = event.results[0][0].transcript;
+            console.log('Transcript:', transcript);
             
-            setInputValue(transcript); 
+            setInputValue(transcript);
 
+            // Send immediately after recognition completes
             setTimeout(() => {
                 handleSend(transcript);
-            }, 50); 
+            }, 100);
         };
 
-        recognition.start();
-        recognitionRef.current = recognition;
+        return recognition;
+    };
+
+    const startListening = async () => {
+        if (!isSpeechSupported) {
+            let message = "Speech Recognition is not supported in this browser.";
+            if (isIOS()) {
+                message += " On iOS, please use Safari browser and ensure 'Dictation' is enabled in Settings > General > Keyboards.";
+            } else {
+                message += " Please use Chrome, Safari, or Edge.";
+            }
+            alert(message);
+            return;
+        }
+
+        // Prevent multiple initializations
+        if (isInitializedRef.current || isListening) {
+            console.log('Recognition already running');
+            return;
+        }
+
+        // Request microphone permission FIRST - crucial for mobile
+        try {
+            console.log('Requesting microphone access...');
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            console.log('Microphone access granted');
+            
+            // Stop the stream immediately
+            stream.getTracks().forEach(track => track.stop());
+            
+            // Small delay before starting recognition (helps on mobile)
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+        } catch (err) {
+            console.error('Microphone access error:', err);
+            
+            let errorMessage = "Could not access microphone. ";
+            
+            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                if (isIOS()) {
+                    errorMessage += "On iOS:\n1. Go to Settings > Safari > Microphone\n2. Allow microphone access\n3. Also enable Settings > General > Keyboards > Dictation";
+                } else {
+                    errorMessage += "Please allow microphone access in your browser settings and reload the page.";
+                }
+            } else if (err.name === 'NotFoundError') {
+                errorMessage += "No microphone found on your device.";
+            } else if (err.name === 'NotReadableError') {
+                errorMessage += "Microphone is already in use by another app. Please close other apps and try again.";
+            } else if (err.name === 'SecurityError') {
+                errorMessage += "HTTPS connection is required for microphone access.";
+            } else {
+                errorMessage += err.message || "Please check your settings.";
+            }
+            
+            alert(errorMessage);
+            return;
+        }
+
+        // Initialize and start recognition
+        try {
+            const recognition = initializeRecognition();
+            if (!recognition) {
+                alert('Could not initialize speech recognition');
+                return;
+            }
+
+            recognitionRef.current = recognition;
+            isInitializedRef.current = true;
+            
+            console.log('Starting recognition...');
+            recognition.start();
+            
+        } catch (error) {
+            console.error('Failed to start recognition:', error);
+            isInitializedRef.current = false;
+            
+            if (error.message && error.message.includes('already started')) {
+                // Recognition already running, stop and try again
+                if (recognitionRef.current) {
+                    recognitionRef.current.abort();
+                }
+                setTimeout(() => startListening(), 300);
+            } else {
+                alert('Failed to start speech recognition. Please try again.');
+            }
+        }
     };
 
     const stopListening = () => {
-        if (recognitionRef.current) {
-            recognitionRef.current.stop();
+        if (recognitionRef.current && isListening) {
+            try {
+                recognitionRef.current.stop();
+                console.log('Stopping recognition');
+            } catch (error) {
+                console.error('Error stopping recognition:', error);
+            }
         }
         setIsListening(false);
+        isInitializedRef.current = false;
     };
 
     const handleSend = async (text = null) => {
@@ -218,6 +366,16 @@ export default function ChatTTS() {
         handleSend(suggestion);
     };
 
+    const getMicButtonTitle = () => {
+        if (!isSpeechSupported) {
+            if (isIOS()) {
+                return "Speech recognition not supported. Use Safari and enable Dictation in Settings.";
+            }
+            return "Speech recognition not supported in this browser";
+        }
+        return isListening ? "Tap to stop listening" : "Tap to speak";
+    };
+
     return (
         <div className="backgroundch">
             <motion.div
@@ -252,7 +410,7 @@ export default function ChatTTS() {
                                 <div className="alab-with-bubble">
                                     <img src={draft_alab_hi} alt="Alab Robot" className="robot-gif" />
                                     <div className="alab-bubble">
-                                        Hold the microphone button!
+                                        {isMobile() ? "Tap the microphone button!" : "Click the microphone button!"}
                                     </div>
                                 </div>
                             </motion.div>
@@ -280,7 +438,6 @@ export default function ChatTTS() {
                                         </div>
                                     ) : (
                                         <div className={`message_bubble ${msg.sender}`}>
-                                            {/* RENDER LOGIC FOR READABILITY (CSS: bot-response-text) */}
                                             {msg.sender === "bot" ? (
                                                 <div className="bot-response-text">
                                                     {msg.text}
@@ -331,7 +488,7 @@ export default function ChatTTS() {
                             </button>
                         </div>
 
-                        {/* Input Wrapper - Contains input container and external mic */}
+                        {/* Input Wrapper */}
                         <div className="input-wrapper">
                             <div className="input-container2">
                                 <input
@@ -352,21 +509,32 @@ export default function ChatTTS() {
                                 </button>
                             </div>
 
-                            {/* Mic Button */}
+                            {/* Mic Button - Direct user action required */}
                             <button
-                                onClick={() => (isListening ? stopListening() : startListening())}
+                                onTouchStart={(e) => {
+                                    e.preventDefault();
+                                    if (isListening) {
+                                        stopListening();
+                                    } else {
+                                        startListening();
+                                    }
+                                }}
+                                onClick={(e) => {
+                                    // Fallback for non-touch devices
+                                    if (isListening) {
+                                        stopListening();
+                                    } else {
+                                        startListening();
+                                    }
+                                }}
                                 className={`mic-button-external ${isListening ? "listening" : ""}`}
                                 style={{ 
                                     display: 'flex',
                                     flexShrink: 0,
+                                    WebkitTapHighlightColor: 'transparent',
+                                    touchAction: 'manipulation'
                                 }}
-                                title={
-                                    !isSpeechSupported 
-                                        ? "Speech recognition not supported" 
-                                        : isListening 
-                                        ? "Stop listening" 
-                                        : "Tap to speak"
-                                }
+                                title={getMicButtonTitle()}
                                 disabled={!isSpeechSupported}
                             >
                                 {isListening ? (
